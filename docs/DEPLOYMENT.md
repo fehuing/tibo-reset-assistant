@@ -110,13 +110,13 @@ python ops/translate_posts.py --state .data --config .data/translation.json
 
 如果部署环境有自己的 HTTP/HTTPS 出站代理，Python 的 HTTP 抓取可使用 `HTTPS_PROXY` / `HTTP_PROXY` 环境变量。它们需要配置在**实际运行服务的环境**里；Docker 容器里的 `127.0.0.1` 指向容器自身，不是宿主机。默认 Compose 不传递这些私有设置，如有需要在自己的 Compose override 中配置。Playwright 浏览器网络需要单独设置其代理；仅设置 Python 的 HTTP 代理不保证浏览器子资源也能访问。请不要把含有账号密码的代理 URL 提交 GitHub。
 
-## 联系方式与自愿支持配置
+## 仓库联系方式
 
-`lib/site-config.ts` 中的小程序码和微信码是项目原作者已授权公开的素材。可以替换成自己的图片路径，或设置为空字符串隐藏。抖音设置 `douyin.name`、`douyin.url` 和/或 `douyin.qrCode`；未配置的项目不显示。
+作者的小程序码、微信联系码、抖音链接和二维码统一放在仓库 README，素材目录为 `docs/assets/`。这些素材不会复制到网站静态输出中，网站默认不展示作者联系区域。
 
-自愿支持需要同时设置 `support.enabled=true`、`support.recipient`（公开展示的收款方名称），并提供 `support.wechatPayCode` 或 `support.alipayCode`。收款图放入 `public/` 后填写 `/radar/文件名.png`，再重新构建。未配置完整时不显示打赏入口。联系二维码不会自动用作支付二维码。
+部署者如需添加自己的小程序码或联系码，可使用原有的 `lib/site-config.ts` 可选配置，图片放入 `public/` 后填写 `/radar/文件名.png` 并重新构建。默认配置留空。
 
-弹窗明确自愿、金额自选、免费使用不受影响。它仅展示收款码，不发起或验证交易，不存储支付信息，也不显示虚构的收款金额或付款成功提示。
+自愿支持说明目前只在 README 中展示，未开放打赏、未上传收款码，也没有网页支付入口。
 
 ## 公共 API
 

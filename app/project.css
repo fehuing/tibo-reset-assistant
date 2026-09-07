@@ -14,20 +14,8 @@
 .collection-notice dt { color: var(--ink); font-weight: 700; }
 .collection-notice dd { margin: 4px 0 0; }
 .collection-notice a { display: inline-flex; gap: 5px; align-items: center; margin-top: 8px; color: var(--ink); text-decoration: underline; }
-.project-credit { padding: 24px; margin: 28px 0; overflow-wrap: anywhere; }
-.project-credit h2 { font-size: 19px; margin: 0 0 10px; }
-.project-credit p { font-size: 14px; margin: 10px 0; }
-.project-credit a:not(.press-button) { text-decoration: underline; text-underline-offset: 3px; }
-.project-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
-.support-dialog { width: min(calc(100vw - 32px), 500px); max-height: calc(100dvh - 48px); overflow-y: auto; padding: 24px; }
-.support-code { width: min(100%, 280px); height: auto; display: block; margin: 12px auto; border-radius: 12px; }
-.support-options { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0; }
-.support-options [aria-pressed=true] { outline: 3px solid var(--ink); outline-offset: 2px; }
-.support-note { font-size: 13px; color: var(--muted); }
 @media (max-width: 520px) {
   .collection-notice { padding: 16px; }
   .collection-heading { font-size: 15px; }
   .collection-notice dl { grid-template-columns: 1fr; gap: 12px; }
-  .project-credit { padding: 20px; }
-  .project-links .press-button { flex: 1; white-space: nowrap; }
 }

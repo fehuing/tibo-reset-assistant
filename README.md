@@ -2,7 +2,9 @@
 
 一个可以自行部署的 Codex 重置公告追踪网站。支持中英文切换、深色模式、重置日历、公告状态、原文截图、中文阅读、分享链接和社区投票。
 
-[在线示例](https://codex-reset.top/) · [更新日志](CHANGELOG.md) · [部署与数据说明](docs/DEPLOYMENT.md)
+[在线示例](https://codex-reset.top/) · [更新日志](CHANGELOG.md) · [部署与数据说明](docs/DEPLOYMENT.md) · [联系作者与小程序](#联系作者与小程序)
+
+**UI 视觉设计参考 [Codex Resets](https://codex-resets.com/)，本项目的页面业务、采集与服务逻辑为独立编写，未使用参考网站的源码。** 第三方依赖及素材的许可说明见 [NOTICE](NOTICE.md)。
 
 ![页面风格](public/share-cover.jpg)
 
@@ -71,7 +73,7 @@ Linux 可使用 `python3 -m playwright install --with-deps chromium` 安装系�
 ## 定制与开发
 
 - 复制 `.env.example` 为 `.env` 配置端口、站点地址和采集选项；修改构建参数后重新运行 `npm start`。
-- `lib/site-config.ts`：小程序码、微信联系码、抖音和自愿支持配置。当前两张二维码属于本项目原作者；自行部署可保留署名，也可替换或隐藏。抖音与收款码未配置时不显示入口。
+- `lib/site-config.ts`：部署者可选的小程序码和联系码，默认留空。作者的联系方式统一展示在本 README，不自动添加到部署者的网页。
 - `public/tibo-avatar.jpg`、`public/tibo-favicon.png`：头像和标签页图标。
 - `app/globals.css`：页面样式；`lib/i18n.ts`：中英文文案。
 - `app/page.tsx`、`components/`：页面与组件；`ops/`：完整网页后端和采集逻辑。
@@ -89,21 +91,25 @@ python scripts/smoke.py
 
 依赖通过 `package-lock.json` 和 `requirements-capture.txt` 锁定，脚本自动安装；不上传体积大且与操作系统相关的 `node_modules`、虚拟环境和浏览器二进制文件。
 
-这是**网页版开源仓库**，包含网页和独立运行所需的后端。微信小程序源码、线上服务器凭据、运行数据库和内部部署记录不在此仓库中。下方两张二维码由作者明确授权公开，用于联系和访问小程序。
+这是**网页版开源仓库**，包含网页和独立运行所需的后端。微信小程序源码、线上服务器凭据、运行数据库和内部部署记录不在此仓库中。下方联系素材由作者明确授权公开，存放在 `docs/assets/`，用于仓库说明展示。
 
 ## 联系作者与小程序
 
-| Tibo重置助手小程序 | 微信联系作者：摸鱼永动机 |
-| --- | --- |
-| <img src="public/tibo-miniprogram-code.png" width="220" alt="Tibo重置助手小程序码" /> | <img src="public/wechat-contact-code.png" width="220" alt="作者微信联系二维码" /> |
+作者：**摸鱼永动机**。抖音号：**PokemonCham**，分享 AI、自动化和项目开发记录。
 
-微信码是**添加好友的联系码，不是收款码**。抖音主页与自愿支持方式会在作者提供素材后补充。
+[打开作者的抖音主页](https://www.douyin.com/user/MS4wLjABAAAAgKEIN1i2djS40akFCL0eHusrxGpZkN5HalkAZG-DHOs)
+
+| Tibo重置助手小程序 | 微信联系作者 | 抖音：摸鱼永动机 |
+| --- | --- | --- |
+| <a href="docs/assets/tibo-miniprogram-code.png"><img src="docs/assets/tibo-miniprogram-code.png" width="240" alt="Tibo重置助手小程序码" /></a> | <a href="docs/assets/wechat-contact-code.png"><img src="docs/assets/wechat-contact-code.png" width="240" alt="作者微信联系二维码" /></a> | <a href="docs/assets/douyin-code.jpg"><img src="docs/assets/douyin-code.jpg" width="240" alt="摸鱼永动机的抖音二维码，抖音号 PokemonCham" /></a> |
+
+点击图片可查看原图，微信码是**添加好友的联系码，不是收款码**。
 
 ## 自愿支持
 
 源代码按 MIT 开源，完整功能无需付费。欢迎 Star、提交问题或分享项目。
 
-网页已提供可选的“自愿支持作者”弹窗：金额由支持者自行选择，不支付也能使用全部开源功能，不承诺重置额度或额外权益。**当前未配置收款码，打赏入口保持隐藏。** 设置 `lib/site-config.ts` 中的 `support.enabled`、`support.recipient` 和真实收款码图片路径后重新构建即可显示；联系码不能代替收款码。页面只展示图片，不处理支付、不采集支付信息，也不会自行宣称收款成功。
+后续若开放打赏，将在本 README 补充自愿支持方式；金额自选、不支付也能完整使用开源功能，不承诺重置额度或额外权益。**目前暂未开放打赏，仓库未发布收款二维码。**
 
 ## English quick start
 
@@ -112,7 +118,5 @@ Install Node.js 22.13+ and Python 3.10+, clone this repository, then run `npm st
 The default mode uses an explicitly labelled historical snapshot. Counters belong to your own instance and start at zero. `npm start -- --live` enables best-effort public X collection. New screenshots require the optional Python packages and Chromium; new translations require your own configured provider. X access can fail or omit replies. No personal Codex balance is read, and a forecast/hint is never proof of delivery.
 
 ## 许可与致谢
-
-**UI 视觉设计参考 [Codex Resets](https://codex-resets.com/)，本项目的页面业务、采集与服务逻辑为独立编写，未使用参考网站的源码。**
 
 本项目自有代码采用 [MIT License](LICENSE)。React、组件库等第三方依赖各自保留许可证；公开推文、截图、头像和第三方标识不纳入本项目的 MIT 授权，权利属于其原权利人，详见 [NOTICE](NOTICE.md)。本项目不是 OpenAI、X 或 Tibo 的官方产品。

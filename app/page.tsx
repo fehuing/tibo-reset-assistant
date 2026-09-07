@@ -11,7 +11,6 @@ import { ResetWatch } from '@/components/reset-watch';
 import { PostContent } from '@/components/post-content';
 import { AnnouncementStatus } from '@/components/announcement-status';
 import { CollectionNotice } from '@/components/collection-notice';
-import { ProjectCredit } from '@/components/project-credit';
 import type { CollectionStatus } from '@/lib/collection-status';
 import { announcementCopy, calendarRecords, type ResetEvent, type EventStats } from '@/lib/announcements';
 import { formatElapsed, formatStamp, resetLabel, text as i18nText, type Locale } from '@/lib/i18n';
@@ -314,7 +313,6 @@ export default function Home() {
           </div>
         </aside>)}
 
-        <ProjectCredit locale={locale} />
         <aside className="about-strip">
           <span className="about-symbol"><Radio size={31} /></span>
           <div><h2>{t('aboutTitle')}</h2><p>{t('aboutText')}</p></div>
