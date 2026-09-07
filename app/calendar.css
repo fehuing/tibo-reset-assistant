@@ -1,0 +1,58 @@
+:root {
+  --calendar-paper: #fffdf7;
+  --calendar-ink: #26201a;
+  --calendar-muted: #877b6b;
+  --calendar-empty: #f1e3c4;
+  --calendar-regular: #ff5c2b;
+  --calendar-banked: #ffb07a;
+  --calendar-tip-bg: #26201a;
+  --calendar-tip-text: #fff4dd;
+}
+.dark {
+  --calendar-paper: oklch(24% .014 70);
+  --calendar-ink: oklch(93% .025 80);
+  --calendar-muted: oklch(66% .024 72);
+  --calendar-empty: oklch(35% .022 75);
+  --calendar-regular: oklch(67% .2 38);
+  --calendar-banked: oklch(78% .12 48);
+  --calendar-tip-bg: oklch(93% .025 80);
+  --calendar-tip-text: oklch(18% .012 70);
+}
+.history-section { --calendar-cell: 22px; width: 100%; margin: 46px 0 0; }
+.calendar-heading { display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px; }
+.calendar-heading h2 { font-size: 24px; font-weight: 800; letter-spacing: -.24px; white-space: nowrap; }
+.calendar-legend { display: flex; flex-wrap: wrap; align-items: center; gap: 5px 12px; }
+.calendar-legend span { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--calendar-muted); white-space: nowrap; }
+.legend-square { display: inline-block; width: 11px; height: 11px; border-radius: 3px; background: var(--calendar-empty); border: 1.5px solid var(--calendar-ink); }
+.history-section .regular { --cell-color: var(--calendar-regular); }
+.history-section .banked { --cell-color: var(--calendar-banked); }
+.legend-square.regular, .legend-square.banked { background: var(--cell-color); }
+.calendar-card { container-type: inline-size; padding: 18px 20px 14px; background: var(--calendar-paper); border: 2px solid var(--calendar-ink); border-radius: 14px; box-shadow: 4px 4px 0 var(--shadow); }
+.calendar-container { display: flex; gap: 8px; max-width: 100%; position: relative; }
+.calendar-weekdays { display: grid; grid-template-rows: 20px repeat(7, var(--calendar-cell)); gap: 4px; flex: 0 0 var(--calendar-weekday-width, 12px); font: 12px/1.2 'Courier New', monospace; color: var(--calendar-muted); }
+.calendar-weekdays span { display: flex; align-items: center; }
+.calendar-scroll { flex: 1; min-width: 0; max-width: 100%; overflow: auto hidden; scrollbar-width: thin; scrollbar-color: var(--calendar-empty) transparent; margin: -4px; padding: 4px; }
+.calendar-scroll:focus-visible { outline: 2px solid var(--calendar-ink); outline-offset: 3px; }
+.calendar-grid { display: grid; grid-template-rows: 20px repeat(7, var(--calendar-cell)); gap: 4px; width: max-content; position: relative; }
+.calendar-month { align-self: start; font: 12px/1.2 'Courier New', monospace; color: var(--calendar-muted); white-space: nowrap; }
+.calendar-day { display: block; width: var(--calendar-cell); height: var(--calendar-cell); background: var(--calendar-empty); border: none; border-radius: 6px; padding: 0; position: relative; cursor: pointer; transition: transform .15s cubic-bezier(.34, 1.56, .64, 1); }
+.calendar-day.regular, .calendar-day.banked { background: var(--cell-color); border: 1.5px solid var(--calendar-ink); box-shadow: 1.5px 1.5px 0 var(--shadow); }
+.calendar-day:where(:not(:disabled):not(.calendar-future)):hover, .calendar-day:focus-visible { outline: none; transform: scale(1.22); z-index: 1; }
+.calendar-day.regular:hover, .calendar-day.regular:focus-visible, .calendar-day.banked:hover, .calendar-day.banked:focus-visible { transform: scale(1.25) rotate(6deg); }
+.calendar-day:disabled { cursor: default; opacity: .45; }
+.calendar-day.calendar-future { background: transparent; cursor: default; }
+.calendar-tooltip { display: block; width: max-content; max-width: min(260px, calc(100vw - 24px)); padding: 9px 11px; border-radius: 8px; background: var(--calendar-tip-bg); color: var(--calendar-tip-text); font: 12px/1.45 'Courier New', monospace; pointer-events: none; }
+.calendar-tooltip-zone { opacity: .8; }
+.calendar-tooltip p { margin: 3px 0 0; overflow-wrap: anywhere; }
+.calendar-tooltip-event { margin-top: 4px; }
+.calendar-tooltip-event p { font-family: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif; opacity: .85; }
+.calendar-tooltip > svg { fill: var(--calendar-tip-bg); background: var(--calendar-tip-bg); }
+@supports (width: 1cqw) {
+  .calendar-container { --calendar-cell: min(22px, calc((100cqw - var(--calendar-weekday-width, 12px) - 8px - (var(--calendar-columns) - 1) * 4px) / var(--calendar-columns))); }
+}
+@media (max-width: 640px) {
+  .calendar-container { --calendar-cell: 15px; }
+  .calendar-heading { flex-direction: column; gap: 4px; }
+  .calendar-card { padding: 12px 12px 10px; }
+  .calendar-scroll { padding-bottom: 14px; }
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "checked_at": "2026-09-07T15:00:20.351574+00:00",
+  "watch": {
+    "episode_id": "2096692394435752258",
+    "source_url": "https://x.com/thsottiaux/status/2096692394435752258",
+    "text": "@Gelassoldat @rezoundous Who says it won't reset in a while 👀",
+    "reply_context": {
+      "text": "@rezoundous Fable, in most instances. Also, my usage has expired and won't reset for a while.",
+      "author": "Gelassoldat",
+      "source_url": "https://x.com/Gelassoldat/status/2096690263561306468"
+    },
+    "observed_at": "2026-09-06T20:09:56+00:00",
+    "expires_at": "2026-09-07T20:09:56+00:00",
+    "window_hours": 24,
+    "window_basis": "site_observation_window",
+    "discovered_via": "user_reference",
+    "evidence": {
+      "method": "public_x_source_rules",
+      "version": "2026-09-07.1",
+      "source_sha256": "f88d56341d467d1c9eda3115b388cb6d57d4b7e79c3b13bb713390724dcbaf60",
+      "document_sha256": "db0e22241f307ecd8ba23c826019d393189feababcbc590e67da16b93b716782"
+    },
+    "verified_at": "2026-09-07T15:00:20.351574+00:00"
+  }
+}

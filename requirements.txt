@@ -1,0 +1,3 @@
+# Core HTTP server, SQLite, polling and rule classification use Python's standard library.
+# Python >=3.10. No pip packages are needed for normal startup.
+# Screenshot capture is optional; see requirements-capture.txt.
