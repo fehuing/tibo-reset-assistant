@@ -187,7 +187,7 @@ export default function Home() {
       </header>
 
       <main>
-        {feed?.mode === 'snapshot' && <p className="error-note" role="status">{locale === 'zh' ? '本地历史快照 · 未启用实时采集；互动计数仅保存在此实例。' : 'Local historical snapshot · Live collection is off. Counts belong to this instance.'}</p>}
+        {feed?.mode === 'snapshot' && <p className="error-note" role="status">{locale === 'zh' ? '本地历史快照 · 尚未取得实时采集结果；互动计数仅保存在此实例。' : 'Local historical snapshot · No live collection result yet. Counts belong to this instance.'}</p>}
         <ResetWatch locale={locale} now={now} />
         <section className="intro">
           <div className="eyebrow"><span className="tiny-square" /> {t('introKicker')}</div>
