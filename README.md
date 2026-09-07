@@ -44,6 +44,7 @@ npm start -- --live
 
 ## 功能
 
+- 采集状态提示：区分实时采集关闭、网络超时、DNS、TLS、X 访问受限、限流和页面解析失败。失败保留旧数据并显示原因，不把“没有更新”当成“没有新公告”。
 - 中文 / English 一键切换，浅色 / 深色模式，手机宽度适配。
 - 公告分为预告、已宣布发放和待确认；统计与日历只按已宣布事件去重计算。
 - “重置观察”展示经过来源核对的暗示和回复上下文，投票独立于公告统计。
@@ -70,7 +71,7 @@ Linux 可使用 `python3 -m playwright install --with-deps chromium` 安装系�
 ## 定制与开发
 
 - 复制 `.env.example` 为 `.env` 配置端口、站点地址和采集选项；修改构建参数后重新运行 `npm start`。
-- `lib/site-config.ts`：可选小程序码、联系二维码和名称。默认不显示；请放入自己的素材。
+- `lib/site-config.ts`：小程序码、微信联系码、抖音和自愿支持配置。当前两张二维码属于本项目原作者；自行部署可保留署名，也可替换或隐藏。抖音与收款码未配置时不显示入口。
 - `public/tibo-avatar.jpg`、`public/tibo-favicon.png`：头像和标签页图标。
 - `app/globals.css`：页面样式；`lib/i18n.ts`：中英文文案。
 - `app/page.tsx`、`components/`：页面与组件；`ops/`：完整网页后端和采集逻辑。
@@ -88,7 +89,21 @@ python scripts/smoke.py
 
 依赖通过 `package-lock.json` 和 `requirements-capture.txt` 锁定，脚本自动安装；不上传体积大且与操作系统相关的 `node_modules`、虚拟环境和浏览器二进制文件。
 
-这是**网页版开源仓库**，包含网页和独立运行所需的后端。微信小程序、线上服务器凭据、运行数据库、个人二维码和内部部署记录不在此仓库中。
+这是**网页版开源仓库**，包含网页和独立运行所需的后端。微信小程序源码、线上服务器凭据、运行数据库和内部部署记录不在此仓库中。下方两张二维码由作者明确授权公开，用于联系和访问小程序。
+
+## 联系作者与小程序
+
+| Tibo重置助手小程序 | 微信联系作者：摸鱼永动机 |
+| --- | --- |
+| <img src="public/tibo-miniprogram-code.png" width="220" alt="Tibo重置助手小程序码" /> | <img src="public/wechat-contact-code.png" width="220" alt="作者微信联系二维码" /> |
+
+微信码是**添加好友的联系码，不是收款码**。抖音主页与自愿支持方式会在作者提供素材后补充。
+
+## 自愿支持
+
+源代码按 MIT 开源，完整功能无需付费。欢迎 Star、提交问题或分享项目。
+
+网页已提供可选的“自愿支持作者”弹窗：金额由支持者自行选择，不支付也能使用全部开源功能，不承诺重置额度或额外权益。**当前未配置收款码，打赏入口保持隐藏。** 设置 `lib/site-config.ts` 中的 `support.enabled`、`support.recipient` 和真实收款码图片路径后重新构建即可显示；联系码不能代替收款码。页面只展示图片，不处理支付、不采集支付信息，也不会自行宣称收款成功。
 
 ## English quick start
 
@@ -98,4 +113,6 @@ The default mode uses an explicitly labelled historical snapshot. Counters belon
 
 ## 许可与致谢
 
-本项目代码采用 [MIT License](LICENSE)。公开推文、截图、头像和第三方标识不纳入本项目的 MIT 授权，权利属于其原权利人，详见 [NOTICE](NOTICE.md)。页面风格参考 [Codex Resets](https://codex-resets.com/)。本项目不是 OpenAI、X 或 Tibo 的官方产品。
+**UI 视觉设计参考 [Codex Resets](https://codex-resets.com/)，本项目的页面业务、采集与服务逻辑为独立编写，未使用参考网站的源码。**
+
+本项目自有代码采用 [MIT License](LICENSE)。React、组件库等第三方依赖各自保留许可证；公开推文、截图、头像和第三方标识不纳入本项目的 MIT 授权，权利属于其原权利人，详见 [NOTICE](NOTICE.md)。本项目不是 OpenAI、X 或 Tibo 的官方产品。

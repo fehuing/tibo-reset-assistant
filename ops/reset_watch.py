@@ -14,6 +14,7 @@ import urllib.request
 
 from collector import atomic_json, read_json
 from announcement_semantics import assess
+from collection_status import diagnose
 
 AUTHOR = 'thsottiaux'
 PROFILE = 'https://x.com/' + AUTHOR
@@ -141,7 +142,7 @@ def collect_watch(state, get=get_document, now=None):
                 if hint_from_post(post, now, 'x_public_timeline'):
                     urls[post['source_url']] = 'x_public_timeline'
         except Exception as error:
-            errors.append({'surface': url, 'error': type(error).__name__})
+            errors.append({'surface': url, **diagnose(error)})
     # Existing user-provided source links bootstrap discovery, never text/state.
     for url in config.get('source_urls', []):
         if SOURCE.fullmatch(url):
@@ -155,7 +156,7 @@ def collect_watch(state, get=get_document, now=None):
             if SOURCE.fullmatch(url):
                 urls.setdefault(url, 'reference_pointer')
         except Exception as error:
-            errors.append({'surface': 'reference_pointer', 'error': type(error).__name__})
+            errors.append({'surface': 'reference_pointer', **diagnose(error)})
     old = previous.get('watch')
     if old and now < date(old['expires_at']):
         urls.setdefault(old['source_url'], old['discovered_via'])
@@ -170,7 +171,7 @@ def collect_watch(state, get=get_document, now=None):
                 hint['evidence']['document_sha256'] = hashlib.sha256(document.encode()).hexdigest()
                 candidates.append(hint)
         except Exception as error:
-            errors.append({'surface': url, 'error': type(error).__name__})
+            errors.append({'surface': url, **diagnose(error)})
             if old and old.get('source_url') == url:
                 candidates.append(old)  # Expiry/verification timestamp never advance.
     watch = max(candidates, key=lambda hint: date(hint['observed_at']), default=None)

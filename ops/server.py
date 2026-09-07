@@ -13,6 +13,7 @@ from reactions import ReactionHandler, ReactionServer, ReactionStore, RateLimite
 from watch_votes import WatchStore
 from collector import atomic_json, collect, read_json
 from reset_watch import collect_watch
+from collection_status import CollectionStatus
 
 
 def initialize(root, state):
@@ -26,20 +27,34 @@ def initialize(root, state):
                 shutil.copy2(source, dest)
 
 
-def poll(state, stop, args):
-    interval = max(120, int(os.getenv('POLL_SECONDS', '120')))
+def collect_cycle(state, status):
+    try:
+        feed = collect(state / 'data.json', state / 'source-cache.json', allow_fallback=os.getenv('ALLOW_REFERENCE_FALLBACK') == '1')
+        if feed['source'].get('fallback_used'):
+            diagnostic = feed['source'].get('primary_error')
+            status.record('feed', 'degraded', diagnostic=diagnostic if isinstance(diagnostic, dict) else {'code': 'collector_error'})
+        else:
+            status.record('feed')
+    except Exception as error:
+        status.record('feed', 'error', error=error)
+    try:
+        result = collect_watch(state)
+        errors = [error for error in result['collection']['errors'] if error['surface'] != 'reference_pointer']
+        if errors:
+            status.record('watch', 'degraded' if result['collection']['public_timeline_read'] else 'error', diagnostic=errors[0])
+        else:
+            status.record('watch')
+    except Exception as error:
+        status.record('watch', 'error', error=error)
+    # A transport failure never replaces data.json or advances its checked_at.
+    public = status.snapshot()
+    atomic_json(state / 'collection-status.json', public)
+    print(json.dumps({'collection': public['state'], 'codes': {k: v['code'] for k, v in public['stages'].items()}}), flush=True)
+
+
+def poll(state, stop, args, status):
     while not stop.is_set():
-        try:
-            collect(state / 'data.json', state / 'source-cache.json', allow_fallback=os.getenv('ALLOW_REFERENCE_FALLBACK') == '1')
-            atomic_json(state / 'collection-status.json', {'ok': True})
-        except Exception as error:
-            # Do not overwrite the last successful collection timestamp.
-            print('Feed collection failed: ' + type(error).__name__, flush=True)
-            atomic_json(state / 'collection-status.json', {'ok': False, 'error': type(error).__name__})
-        try:
-            collect_watch(state)
-        except Exception as error:
-            print('Watch collection failed: ' + type(error).__name__, flush=True)
+        collect_cycle(state, status)
         try:
             if args.capture:
                 from capture_posts import main as capture
@@ -55,11 +70,13 @@ def poll(state, stop, args):
                 atomic_json(state / 'data.json', attach_briefs(feed))
         except Exception as error:
             print('Optional content processing failed: ' + type(error).__name__, flush=True)
-        stop.wait(interval)
+        status.schedule()
+        stop.wait(status.interval)
 
 
-def handler(root, state, port):
+def handler(root, state, port, status=None):
     static = (root / 'dist/client/radar').resolve()
+    collection_status = status or CollectionStatus(False)
 
     class Handler(ReactionHandler):
         store = ReactionStore(state / 'reactions.sqlite3', state / 'data.json')
@@ -82,7 +99,12 @@ def handler(root, state, port):
                 self.path = path.removeprefix('/api')
                 return super().do_GET()
             if path == '/data.json':
-                return self.file(state / 'data.json', no_cache=True)
+                feed = read_json(state / 'data.json')
+                if feed.get('schema_version') != 1:
+                    return self.send_json(503, {'error': 'feed_unavailable', 'collection_status': collection_status.snapshot()})
+                return self.send_json(200, dict(feed, collection_status=collection_status.snapshot()))
+            if path == '/api/collection-status':
+                return self.send_json(200, collection_status.snapshot())
             if path.startswith('/post-images/'):
                 name = path.removeprefix('/post-images/')
                 if not re.fullmatch(r'\d+-[a-f0-9]{16}\.jpg', name):
@@ -132,11 +154,12 @@ def serve(root, args):
     origins = {f'http://localhost:{args.port}', f'http://127.0.0.1:{args.port}', 'http://localhost:4175', 'http://127.0.0.1:4175'}
     origins.update(value.strip().rstrip('/') for value in os.getenv('ALLOWED_ORIGINS', '').split(',') if value.strip())
     reactions.ALLOWED_ORIGINS = origins
-    server = ReactionServer((args.host, args.port), handler(root, state, args.port))
+    status = CollectionStatus(args.live, int(os.getenv('POLL_SECONDS', '120')))
+    server = ReactionServer((args.host, args.port), handler(root, state, args.port, status))
     stop = threading.Event()
     worker = None
     if args.live:
-        worker = threading.Thread(target=poll, args=(state, stop, args), daemon=True)
+        worker = threading.Thread(target=poll, args=(state, stop, args, status), daemon=True)
         worker.start()
     print(f'Tibo: http://localhost:{args.port}/ | live={args.live} | data={state}', flush=True)
     try:

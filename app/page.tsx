@@ -10,6 +10,9 @@ import { ReactionButton } from '@/components/reaction-button';
 import { ResetWatch } from '@/components/reset-watch';
 import { PostContent } from '@/components/post-content';
 import { AnnouncementStatus } from '@/components/announcement-status';
+import { CollectionNotice } from '@/components/collection-notice';
+import { ProjectCredit } from '@/components/project-credit';
+import type { CollectionStatus } from '@/lib/collection-status';
 import { announcementCopy, calendarRecords, type ResetEvent, type EventStats } from '@/lib/announcements';
 import { formatElapsed, formatStamp, resetLabel, text as i18nText, type Locale } from '@/lib/i18n';
 import type { ResetRecord } from '@/lib/post-content';
@@ -26,6 +29,7 @@ type FeedSource = {
   reset_posts_matched?: number;
 };
 type Feed = {
+  collection_status?: CollectionStatus;
   mode?: 'snapshot' | 'live';
   schema_version: number;
   checked_at: string;
@@ -123,6 +127,7 @@ export default function Home() {
   const selectedRecord = feed?.records.find(record => record.id === selectedPost);
   const age = latest ? formatElapsed(latest.announced_at, now, locale) : null;
   const stale = !!feed && now - Date.parse(feed.checked_at) > 8 * 60000;
+  const collectionProblem = !!feed?.collection_status && feed.collection_status.state !== 'ok';
   const filtered = (feed?.records ?? []).filter(r => filter === 'all' || r.reset_type === filter);
 
   function toggleTheme() {
@@ -187,7 +192,7 @@ export default function Home() {
       </header>
 
       <main>
-        {feed?.mode === 'snapshot' && <p className="error-note" role="status">{locale === 'zh' ? '本地历史快照 · 尚未取得实时采集结果；互动计数仅保存在此实例。' : 'Local historical snapshot · No live collection result yet. Counts belong to this instance.'}</p>}
+        {feed && <CollectionNotice status={feed.collection_status} locale={locale} snapshot={feed.mode === 'snapshot'} unavailable={failure} />}
         <ResetWatch locale={locale} now={now} />
         <section className="intro">
           <div className="eyebrow"><span className="tiny-square" /> {t('introKicker')}</div>
@@ -198,8 +203,8 @@ export default function Home() {
         <section id="latest" className="latest-card paper-card">
           <div className="latest-topline">
             <span className="eyebrow">{t('latest')} {locale === 'zh' && <span className="muted-english">/ LATEST RESET</span>}</span>
-            <span className={'status-badge ' + (failure || stale ? 'status-warning' : '')}>
-              <span className="status-dot" />{feed?.mode === 'snapshot' ? (locale === 'zh' ? '历史快照' : 'Snapshot') : !feed ? failure ? t('disconnected') : t('reading') : failure || stale ? t('delayed') : t('tracking')}
+            <span className={'status-badge ' + (failure || stale || collectionProblem ? 'status-warning' : '')}>
+              <span className="status-dot" />{feed?.mode === 'snapshot' ? (locale === 'zh' ? '历史快照' : 'Snapshot') : !feed ? failure ? t('disconnected') : t('reading') : failure || stale || collectionProblem ? t('delayed') : t('tracking')}
             </span>
           </div>
           {age && latest ? (
@@ -309,6 +314,7 @@ export default function Home() {
           </div>
         </aside>)}
 
+        <ProjectCredit locale={locale} />
         <aside className="about-strip">
           <span className="about-symbol"><Radio size={31} /></span>
           <div><h2>{t('aboutTitle')}</h2><p>{t('aboutText')}</p></div>

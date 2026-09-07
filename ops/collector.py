@@ -19,6 +19,7 @@ import urllib.parse
 import urllib.request
 from announcement_semantics import annotate_records, build_events
 from post_briefs import attach_briefs
+from collection_status import XCollectionError, diagnose
 
 FALLBACK_ORIGIN = "https://codex-resets.com"
 X_PROFILE_URL = "https://x.com/thsottiaux"
@@ -338,15 +339,13 @@ def collect(output, cache_path, allow_fallback=False):
         result = merge_x_posts(existing, posts)
     except Exception as x_error:
         if not allow_fallback:
-            raise RuntimeError("X collection failed; previous feed retained") from x_error
+            raise XCollectionError(x_error) from x_error
         try:
             result, visited = collect_fallback(cache)
-            result["source"]["primary_error"] = type(x_error).__name__ + ": " + str(x_error)[:180]
+            result["source"]["primary_error"] = diagnose(x_error)
             atomic_json(cache_path, {key: value for key, value in cache.items() if key in visited or key == "/api/v1/status"})
         except Exception as fallback_error:
-            raise RuntimeError(
-                "X primary failed (" + type(x_error).__name__ + "); fallback failed (" + type(fallback_error).__name__ + ")"
-            ) from fallback_error
+            raise XCollectionError(x_error, fallback_error) from x_error
     result = attach_post_content(result, cache, read_json(output.parent / 'post-content.json'), read_json(output.parent / 'post-translations.zh.json'))
     result = annotate_records(result)
     result = build_events(result)
@@ -366,5 +365,5 @@ if __name__ == "__main__":
         feed = collect(args.output, args.cache, args.allow_fallback)
         print(json.dumps({"ok": True, "records": len(feed["records"]), "checked_at": feed["checked_at"], "source": feed["source"]["active"]}))
     except Exception as error:
-        print(json.dumps({"ok": False, "error": str(error), "previous_feed_retained": args.output.exists()}), file=sys.stderr)
+        print(json.dumps({"ok": False, "diagnostic": diagnose(error), "previous_feed_retained": args.output.exists()}), file=sys.stderr)
         sys.exit(1)

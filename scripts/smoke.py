@@ -71,6 +71,8 @@ def main():
                     assert headers['Content-Type'] == 'text/javascript', url
             feed = json.loads(request('/data.json')[1])
             assert feed['mode'] == 'snapshot' and len(feed['records']) == 52
+            assert feed['collection_status']['state'] == 'disabled'
+            assert json.loads(request('/api/collection-status')[1])['state'] == 'disabled'
             assert json.loads(request('/radar/data.json')[1]) == feed
             image_count = 0
             for row in feed['records']:

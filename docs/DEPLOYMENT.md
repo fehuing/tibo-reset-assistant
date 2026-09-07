@@ -82,12 +82,49 @@ python ops/capture_posts.py --state .data --limit 3
 python ops/translate_posts.py --state .data --config .data/translation.json
 ```
 
+## 采集失败提示与排查
+
+**能打开本项目网页，不代表部署服务器能访问 X。** 采集发生在服务器进程里；个人电脑或手机上的网络设置不会自动作用于云服务器或 Docker 容器。
+
+前端会在页面上方显示具体情况。`/data.json` 同时附带 `collection_status`，也可独立读取 `/api/collection-status`。HTTP 200 只表示本实例成功返回数据，不代表 X 采集成功；请检查状态字段。
+
+| 状态或错误码 | 含义 | 部署者检查项 |
+| --- | --- | --- |
+| `disabled` | 未启用实时采集 | 需要更新时设置 `LIVE_COLLECTION=1` 或启动加 `--live` |
+| `checking` | 首次采集尚未完成 | 等待本轮检查 |
+| `x_dns` | 无法解析 x.com | 服务器 / 容器 DNS |
+| `x_timeout` | 连接或读取超时 | 服务器出站网络、防火墙、代理可达性 |
+| `x_network` | 网络连接失败 | 出站网络、路由、代理；不等同于确定“没有梯子” |
+| `x_tls` | 证书或安全连接失败 | 系统时间、证书和代理，保持证书验证开启 |
+| `x_access_denied` | HTTP 401/403 | X 登录要求或访问策略；有网络也不一定可采集 |
+| `x_rate_limited` | HTTP 429 | 等待自动重试，减少请求频率 |
+| `x_unavailable` | HTTP 404/410 | 目标页面当前不可读，不据此断定账号已删除 |
+| `x_http` | 其他异常 HTTP 响应 | 记录响应状态并等待恢复 |
+| `x_parse` | 已读页面但无法识别目标内容 | 页面结构改变、登录页、公开内容缺失，更新适配器 |
+| `collector_error` | 其他处理失败 | 部署配置、数据目录权限和程序日志 |
+| 顶层 `stale` | 采集进程长时间未报告状态 | 检查采集进程是否停止或卡住 |
+
+`stages.feed` 与 `stages.watch` 分别记录公告和回复观察，包含 `state`、`code`、可选 `http_status`、`checked_at` 和 `last_success_at`。成功时间指**本次服务启动后**成功读取相应来源的时间；实例重启后会重新验证。回退数据取回成功时，公告状态仍为 `degraded`，保留 X 的错误原因。请求失败不会把 `data.json.checked_at` 改成当前时间，也不会清空历史记录或假装“没有新公告”。
+
+状态接口是只读接口，刷新不会强制请求 X，避免公共访问触发大量外部采集。自动重试每轮完成后至少等待 120 秒；等待过久会提示任务未更新。公开状态不包含异常全文、服务器文件路径、代理地址、账号或密钥。
+
+如果部署环境有自己的 HTTP/HTTPS 出站代理，Python 的 HTTP 抓取可使用 `HTTPS_PROXY` / `HTTP_PROXY` 环境变量。它们需要配置在**实际运行服务的环境**里；Docker 容器里的 `127.0.0.1` 指向容器自身，不是宿主机。默认 Compose 不传递这些私有设置，如有需要在自己的 Compose override 中配置。Playwright 浏览器网络需要单独设置其代理；仅设置 Python 的 HTTP 代理不保证浏览器子资源也能访问。请不要把含有账号密码的代理 URL 提交 GitHub。
+
+## 联系方式与自愿支持配置
+
+`lib/site-config.ts` 中的小程序码和微信码是项目原作者已授权公开的素材。可以替换成自己的图片路径，或设置为空字符串隐藏。抖音设置 `douyin.name`、`douyin.url` 和/或 `douyin.qrCode`；未配置的项目不显示。
+
+自愿支持需要同时设置 `support.enabled=true`、`support.recipient`（公开展示的收款方名称），并提供 `support.wechatPayCode` 或 `support.alipayCode`。收款图放入 `public/` 后填写 `/radar/文件名.png`，再重新构建。未配置完整时不显示打赏入口。联系二维码不会自动用作支付二维码。
+
+弹窗明确自愿、金额自选、免费使用不受影响。它仅展示收款码，不发起或验证交易，不存储支付信息，也不显示虚构的收款金额或付款成功提示。
+
 ## 公共 API
 
 | 路径 | 方法 | 用途 |
 | --- | --- | --- |
 | `/health` | GET | 服务存活检查，不代表 X 采集成功 |
 | `/data.json` | GET | 公告、原文、截图清单、事件统计和采集时间 |
+| `/api/collection-status` | GET | 本实例的采集开关、公告/回复状态与安全错误码 |
 | `/api/reactions` | GET / POST | 当前公告的本实例求重置计数 |
 | `/api/watch` | GET / POST | 当前观察窗和本实例投票 |
 | `/post-images/{id}-{hash}.jpg` | GET | 本地截图或缩略图 |
