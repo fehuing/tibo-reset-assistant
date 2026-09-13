@@ -43,12 +43,45 @@ class WatchStore:
         stale = now - date(data['checked_at']) > dt.timedelta(minutes=8)
         if watch:
             stale = stale or now - date(watch['verified_at']) > dt.timedelta(minutes=8)
+            matched = next((r['reset_confirmation'] for r in feed.get('records', [])
+                            if r.get('status') == 'announced' and
+                            r.get('reset_confirmation', {}).get('method') == 'private_reset_report' and
+                            r['reset_confirmation'].get('watch_episode_id') == watch['episode_id'] and
+                            date(watch['observed_at']) <= date(r['reset_confirmation']['reset_at'])), None)
+            if matched:
+                return {'schema_version': 1, 'watch': None, 'state': 'empty', 'stale': stale,
+                        'checked_at': data['checked_at'], 'closed_watch': {
+                            'episode_id': watch['episode_id'], 'source_url': watch['source_url'],
+                            'closed_at': matched['verified_at'], 'reason': 'private_confirmed_reset',
+                            'source_type': 'owner_quota_report', 'reset_at': matched['reset_at']}}
+        # Site-owner closure is independent from an author delivery statement.
+        # Keep the collected hint and votes archived, but publish no active card.
+        closures_path = self.watch_path.with_name('watch-closures.json')
+        if watch and closures_path.exists():
+            if closures_path.stat().st_size > 256 * 1024:
+                raise ValueError('Closure ledger is too large')
+            ledger = json.loads(closures_path.read_text(encoding='utf-8'))
+            if ledger.get('schema_version') != 1 or not isinstance(ledger.get('episodes'), dict):
+                raise ValueError('Invalid closure ledger')
+            closure = ledger['episodes'].get(watch['episode_id'])
+            if closure is not None:
+                if not isinstance(closure, dict) or closure.get('reason') != 'owner_confirmed_reset' or closure.get('source_type') != 'site_owner_statement':
+                    raise ValueError('Invalid owner closure')
+                if not date(watch['observed_at']) <= date(closure['closed_at']) <= now:
+                    raise ValueError('Invalid closure time')
+                return {'schema_version': 1, 'watch': None, 'state': 'empty', 'stale': stale,
+                        'checked_at': data['checked_at'], 'closed_watch': {
+                            'episode_id': watch['episode_id'], 'source_url': watch['source_url'],
+                            'closed_at': closure['closed_at'], 'reason': closure['reason'], 'source_type': closure['source_type']}}
         return {'schema_version': 1, 'watch': watch, 'state': state, 'stale': stale, 'checked_at': data['checked_at']}
 
     def counts(self, connection, context):
         ident = (context['watch'] or {}).get('episode_id', '')
         counts = dict(connection.execute('SELECT vote,COUNT(*) FROM watch_votes WHERE episode_id=? GROUP BY vote', (ident,)).fetchall())
         yes, no = counts.get('yes', 0), counts.get('no', 0)
+        if context.get('closed_watch'):
+            saved = dict(connection.execute('SELECT vote,COUNT(*) FROM watch_votes WHERE episode_id=? GROUP BY vote', (context['closed_watch']['episode_id'],)).fetchall())
+            context = dict(context, closed_watch=dict(context['closed_watch'], yes=saved.get('yes', 0), no=saved.get('no', 0), total=sum(saved.values())))
         return dict(context, yes=yes, no=no, total=yes + no, yes_percent=(yes * 100 + (yes + no) // 2) // (yes + no) if yes + no else None)
 
     def current(self):

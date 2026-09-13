@@ -3,7 +3,7 @@ import hashlib
 from io import BytesIO
 from pathlib import Path
 import re
-from collector import atomic_json, read_json
+from activity_ingest import atomic_json, read_json
 
 
 def create_thumbnail(raw, width=440):
@@ -50,7 +50,7 @@ def build_thumbnails(state=Path('.data')):
         preview_bytes += len(preview)
         count += 1
     if count:
-        atomic_json(manifest_path, manifest)
+        atomic_json(manifest_path, manifest, mode=0o644)
     return {'created': count, 'original_bytes': original_bytes, 'thumbnail_bytes': preview_bytes}
 
 

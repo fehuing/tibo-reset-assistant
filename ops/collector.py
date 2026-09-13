@@ -274,6 +274,7 @@ def merge_x_posts(existing, posts, now=None):
             "source_text": post["text"],
             "source_url": post["source_url"],
             "source_type": "x_post",
+            **({'in_reply_to_status_id': post['in_reply_to_status_id']} if post.get('in_reply_to_status_id') else {}),
         })
     return _feed(
         merged,
@@ -329,10 +330,22 @@ def attach_post_content(feed, cache, manifest, translations=None):
 
 
 def collect(output, cache_path, allow_fallback=False):
+    from historical_baseline import load_baseline, retain_history, apply_baseline
+    from publication_state import publication_lock
+    baseline = load_baseline(output.parent / 'historical-baseline.json')
     cache = read_json(cache_path)
     existing = read_json(output)
     try:
-        posts = parse_x_profile(fetch_x_profile())
+        document = fetch_x_profile()
+        posts = parse_x_profile(document)
+        from x_public import public_posts
+        verified = {p['id']: p for p in public_posts(document) if p['author'] == 'thsottiaux'}
+        for post in posts:
+            if post['id'] in verified:
+                original = verified[post['id']]
+                post['text'] = original['text']
+                if original.get('reply_to_id'):
+                    post['in_reply_to_status_id'] = original['reply_to_id']
         if not existing.get("records") and allow_fallback:
             existing, visited = collect_fallback(cache)
             atomic_json(cache_path, {key: value for key, value in cache.items() if key in visited or key == "/api/v1/status"})
@@ -346,12 +359,15 @@ def collect(output, cache_path, allow_fallback=False):
             atomic_json(cache_path, {key: value for key, value in cache.items() if key in visited or key == "/api/v1/status"})
         except Exception as fallback_error:
             raise XCollectionError(x_error, fallback_error) from x_error
+    result = retain_history(result, existing, baseline)
     result = attach_post_content(result, cache, read_json(output.parent / 'post-content.json'), read_json(output.parent / 'post-translations.zh.json'))
     result = annotate_records(result)
+    result = apply_baseline(result, baseline)
     result = build_events(result)
     result = attach_briefs(result)
     result["mode"] = "live"
-    atomic_json(output, result)
+    with publication_lock(output.parent):
+        atomic_json(output, result)
     return result
 
 

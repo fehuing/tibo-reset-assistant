@@ -7,7 +7,7 @@ import hashlib
 import re
 import datetime as dt
 
-VERSION = '2026-09-06.1'
+VERSION = '2026-09-08.2'
 RESET = re.compile(r'\b(?:reset\w*|banked credit)\b', re.I)
 CONTEXT = re.compile(r'\b(?:codex|chatgpt|usage|limits?|paid|subscriptions?|accounts?|users?|banked|credits?|allowances?)\b', re.I)
 BANKED = re.compile(r'\b(?:banked reset|reset card|saved reset|banked credit)\b', re.I)
@@ -62,6 +62,8 @@ def annotate_records(feed):
         # Preserve a historical category when the source does not establish one.
         record['status'] = result['status']
         record['assessment'] = result['assessment']
+        record['source_status'] = result['status']
+        record['source_assessment'] = result['assessment'].copy()
     feed['semantics_version'] = VERSION
     return feed
 
@@ -70,7 +72,7 @@ def build_events(feed):
     """Merge only an explicit same-author reference, never temporal proximity.
 
     Unresolved and planned events remain available in the event ledger, but
-    only events with explicit author delivery statements enter the calendar.
+    Delivered events include the sealed, owner-verified historical baseline.
     """
     records = feed['records']
     by_id = {r['id']: r for r in records}
@@ -82,12 +84,37 @@ def build_events(feed):
         return key
 
     for record in sorted(records, key=lambda r: r['announced_at']):
+        analysis = record.get('ai_analysis', {})
+        if record.get('reset_confirmation', {}).get('method') == 'private_reset_report':
+            continue
+        if analysis.get('method') == 'codex_cli' and not record.get('historical_verification'):
+            # Language/relation interpretation comes from the validated model.
+            # Only a source-linked earlier record of the same kind can be merged.
+            target = analysis.get('related_post_id')
+            earlier = by_id.get(target)
+            if (earlier and earlier['id'] != record['id'] and not earlier.get('historical_verification') and
+                    earlier.get('reset_confirmation', {}).get('method') != 'private_reset_report' and
+                    earlier['reset_type'] == record['reset_type'] and
+                    earlier['announced_at'] < record['announced_at'] and
+                    earlier['source_type'] == record['source_type'] == 'x_post'):
+                parent[root(record['id'])] = root(target)
+                record['event_link_evidence'] = {'method': 'codex_cli_explicit_source_reference', 'related_id': target}
+            else:
+                record.pop('event_link_evidence', None)
+            continue
+        verified_parents = [r['id'] for r in records if r.get('confirmation', {}).get('source_post_id') == record['id']
+                            and r['confirmation'].get('method') == 'verified_x_followup']
+        if len(verified_parents) == 1:
+            parent[root(record['id'])] = root(verified_parents[0])
+            record['event_link_evidence'] = {'method': 'verified_x_followup', 'related_id': verified_parents[0]}
+            continue
         refs = re.findall(r'https://(?:www\.)?x\.com/thsottiaux/status/(\d+)', source_body(record))
         if record.get('in_reply_to_status_id'):
             refs.append(str(record['in_reply_to_status_id']))
         # A reference alone can be a comparison. Require explicit follow-up wording.
         followup = re.search(r'\b(?:update|follow.up|this reset|that reset|the reset|as promised|has been propagated|now (?:landed|delivered))\b', source_body(record), re.I)
         candidates = [ref for ref in refs if ref in by_id and ref != record['id']
+                      and bool(by_id[ref].get('historical_verification')) == bool(record.get('historical_verification'))
                       and by_id[ref]['reset_type'] == record['reset_type']
                       and by_id[ref]['source_type'] == record['source_type'] == 'x_post'
                       and by_id[ref]['announced_at'] < record['announced_at']]
@@ -112,9 +139,29 @@ def build_events(feed):
         event = {'id': event_id, 'reset_type': representative['reset_type'], 'status': status,
                  'announced_at': representative['announced_at'], 'record_id': representative['id'],
                  'record_ids': [r['id'] for r in posts], 'source_url': representative['source_url']}
+        if any(r.get('historical_verification') for r in posts):
+            event.update(historical_initialized=True, notification_eligible=False)
+        confirmed_time = next((r['reset_confirmation'] for r in posts
+                               if r.get('reset_confirmation', {}).get('method') == 'private_reset_report'
+                               or (r.get('historical_verification') and r.get('reset_confirmation', {}).get('method') == 'historical_public_snapshot')), None)
+        if confirmed_time:
+            event.update(reset_at=confirmed_time['reset_at'], confirmation_method=confirmed_time['method'])
+            if confirmed_time.get('watch_episode_id'):
+                event['watch_episode_id'] = confirmed_time['watch_episode_id']
         events.append(event)
         for record in posts:
             record['related_record_ids'] = [r['id'] for r in posts if r['id'] != record['id']]
+            if confirmed and record['status'] == 'planned':
+                # Preserve the original preview assessment, expose the event's
+                # completed state and the exact linked announcement as evidence.
+                source = confirmed[0]
+                record['status'] = 'announced'
+                record['confirmation'] = source.get('confirmation') or {
+                    'method': 'linked_author_announcement', 'source_url': source['source_url'],
+                    'source_post_id': source['id'], 'target_id': record['id'],
+                    'published_at': source['announced_at'], 'quote': source['assessment']['quote'],
+                    'source_sha256': source['assessment']['source_sha256']}
+                record['assessment'] = dict(source['assessment'], source_url=source['source_url'])
     events.sort(key=lambda e: e['announced_at'], reverse=True)
     confirmed = [e for e in events if e['status'] == 'announced']
     times = [dt.datetime.fromisoformat(e['announced_at'].replace('Z', '+00:00')) for e in confirmed]
@@ -128,7 +175,10 @@ def build_events(feed):
         'uncertain': sum(e['status'] == 'uncertain' for e in events),
         'avg_interval_days': round(sum(intervals) / len(intervals), 1) if intervals else None,
         'longest_interval_days': round(max(intervals), 1) if intervals else None,
-        'basis': 'explicit_author_delivery_statement',
+        'historical_initialized': sum(bool(e.get('historical_initialized')) for e in events),
+        'basis': 'owner_verified_history_and_author_delivery' if any(r.get('historical_verification') for r in records) else 'explicit_author_delivery_statement',
     }
     # stats remains the legacy post-count contract for already-released clients.
+    if any(e.get('confirmation_method') == 'private_reset_report' for e in events):
+        feed['event_stats']['basis'] = 'owner_verified_history_author_delivery_and_private_reset_reports'
     return feed
