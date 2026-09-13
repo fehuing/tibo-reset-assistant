@@ -17,6 +17,20 @@
 .watch-post { display: flex; gap: 12px; margin-top: 17px; padding: 14px; border: 2px solid var(--ink); border-radius: 12px; background: var(--paper); box-shadow: 2px 3px 0 var(--shadow); }
 .watch-post>img { border-radius: 50%; border: 1px solid var(--ink); width: 36px; height: 36px; flex: 0 0 36px; }
 .watch-post-body { min-width: 0; flex: 1; }
+.watch-ai { margin-top: 17px; padding: 13px 15px; border: 1px solid var(--ink); border-radius: 10px; background: var(--paper); overflow-wrap: anywhere; }
+.watch-ai-label { margin-bottom: 5px; font-size: .75rem; font-weight: 800; letter-spacing: .05em; color: var(--muted); }
+.watch-ai>strong { font-size: 1rem; }
+.watch-ai p { margin: 5px 0; font-size: .9375rem; line-height: 1.6; }
+.watch-ai small { display: block; font-size: .75rem; color: var(--muted); line-height: 1.5; }
+.watch-translation-label { margin-top: 10px; font-size: .75rem; color: var(--muted); }
+.watch-original { margin: 10px 0; font-size: .8125rem; color: var(--muted); }
+.watch-original summary { cursor: pointer; }
+.watch-capture { display: block; max-width: 440px; margin: 13px 0; border: 1px solid var(--ink); border-radius: 8px; overflow: hidden; }
+.watch-capture-viewport { display: block; max-height: 240px; overflow: hidden; background: #fff; }
+.watch-capture img { display: block; width: 100%; height: auto; }
+.watch-capture>span:last-child { display: block; padding: 6px 9px; font-size: .75rem; background: var(--paper); }
+.watch-evidence { margin-top: 8px; }
+.watch-evidence blockquote { margin: 8px 0; padding-left: 10px; border-left: 2px solid currentColor; white-space: pre-wrap; overflow-wrap: anywhere; }
 .watch-byline { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 8px; font-size: .8125rem; }
 .watch-byline span,.watch-byline time { color: var(--muted); }
 .watch-body { margin: 7px 0; font-size: 1rem; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
