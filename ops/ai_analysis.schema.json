@@ -1,0 +1,30 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "id", "source_sha256", "translation_zh", "summary_zh", "summary_en", "relevance", "signal", "scope", "reset_type", "evidence", "related_post_id", "reset_at", "prediction"],
+  "properties": {
+    "schema_version": {"type": "integer", "enum": [1]},
+    "id": {"type": "string"},
+    "source_sha256": {"type": "string"},
+    "translation_zh": {"type": "string"},
+    "summary_zh": {"type": "string"},
+    "summary_en": {"type": "string"},
+    "relevance": {"type": "string", "enum": ["none", "reset"]},
+    "signal": {"type": "string", "enum": ["none", "hint", "announced", "in_progress", "delivered", "denied"]},
+    "scope": {"type": "string", "enum": ["global", "group", "personal", "unknown"]},
+    "reset_type": {"type": "string", "enum": ["regular", "banked", "unknown"]},
+    "evidence": {"type": "array", "items": {"type": "string"}},
+    "related_post_id": {"type": ["string", "null"]},
+    "reset_at": {"type": ["string", "null"]},
+    "prediction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["outlook", "reason_zh", "reason_en"],
+      "properties": {
+        "outlook": {"type": "string", "enum": ["likely", "possible", "unlikely", "unknown"]},
+        "reason_zh": {"type": "string"},
+        "reason_en": {"type": "string"}
+      }
+    }
+  }
+}

@@ -36,7 +36,7 @@ def main():
 
     with tempfile.TemporaryDirectory(prefix='tibo-smoke-') as temp:
         state = Path(temp) / 'state'
-        env = dict(os.environ, LIVE_COLLECTION='0', CAPTURE_POSTS='0', TRANSLATE_POSTS='0', ALLOWED_ORIGINS=base)
+        env = dict(os.environ, LIVE_COLLECTION='0', AI_ANALYSIS='0', CAPTURE_POSTS='0', TRANSLATE_POSTS='0', ALLOWED_ORIGINS=base)
         process = None
         log = (Path(temp) / 'server.log').open('w+', encoding='utf-8')
 
@@ -70,18 +70,21 @@ def main():
                 if file.suffix == '.js':
                     assert headers['Content-Type'] == 'text/javascript', url
             feed = json.loads(request('/data.json')[1])
-            assert feed['mode'] == 'snapshot' and len(feed['records']) == 52
+            seed = json.loads((ROOT / 'sample-data/data.json').read_text(encoding='utf-8'))
+            assert feed['mode'] == 'snapshot' and feed['records'] == seed['records']
+            assert feed.get('announcements') == seed.get('announcements') and len(feed['announcements']) >= 3
             assert feed['collection_status']['state'] == 'disabled'
             assert json.loads(request('/api/collection-status')[1])['state'] == 'disabled'
             assert json.loads(request('/radar/data.json')[1]) == feed
             image_count = 0
-            for row in feed['records']:
+            for row in feed['records'] + feed.get('announcements', []):
                 for shot in (row.get('screenshot'), row.get('screenshot', {}).get('thumbnail')):
                     if shot:
                         status, body, _ = request('/radar/post-images/' + shot['file'])
                         assert status == 200 and hashlib.sha256(body).hexdigest() == shot['sha256']
                         image_count += 1
-            for path in ('/.env', '/.data/reactions.sqlite3', '/ops/server.py', '/radar/../.env', '/radar/%2e%2e/.env', '/radar/post-images/../../run.py'):
+            for path in ('/.env', '/.data/reactions.sqlite3', '/ops/server.py', '/radar/../.env', '/radar/%2e%2e/.env', '/radar/post-images/../../run.py',
+                         '/auth.json', '/.codex/auth.json', '/ai-input/manifest.json', '/ai-analysis/state.json', '/private-reports/reports.sqlite3'):
                 assert request(path)[0] == 404, path
             current = json.loads(request('/api/reactions')[1])
             assert current['count'] == 0, 'No production counter may be imported'

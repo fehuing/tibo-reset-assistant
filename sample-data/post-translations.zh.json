@@ -1,4 +1,33 @@
 {
+  "2098612714704891959": {
+    "text": "Astra 用户们，你们好。这里有一次重置的消息，以及对近期大家发帖反映的质量问题的简短更新。\n\n通过与部分用户合作，我们发现并修复了以下问题：\n- 一些为先前模型编写的技能触发过于频繁，或妨碍模型检查自己的工作。\n- 一项需要主动选择加入的上下文管理实验，可能导致提前停止或回复较早的消息。我们已经停用了它。我们粗略估计，有 4000 至 5000 名用户受到这项实验的影响。\n- 我们还移除了一些配置不当的引擎；测量结果表明，经过这些引擎的一部分长尾流量出现了质量下降。\n\n我们还做了一些较小的改进，整体体验应该会明显改善：更稳定地将任务执行到底，更好地跟进你的最新消息，并在执行过程中更好地检查工作。\n\n大家发布的示例，以及所有直接与我们合作的用户，都为快速修复问题提供了极大的帮助。始终感谢这个出色的社区。\n\n当然，一次重置也将在今天午夜之前到来。",
+    "source_sha256": "3bf824911a096df2ce5c4a694c7d1454257c4b7f889daf5d55fa415f6ba75c35",
+    "method": "codex_cli",
+    "engine": "gpt-6-astra",
+    "translated_at": "2026-09-12T19:02:12.121998+00:00"
+  },
+  "2097752790177370535": {
+    "text": "今天早上出现了一些混乱，一些存储重置卡在 ChatGPT Work 和 Codex 中使用时未完全应用。在受影响的时间范围内使用存储重置卡的每个人都会收到另一张存储重置卡和一封道歉电子邮件。",
+    "source_sha256": "fa88a472616b58d0d0e335054ef8730ae895e63d2c5bd73c99169771765395a7",
+    "method": "browser_machine_translation",
+    "engine": "Google Translate (Chromium browser UI)",
+    "translated_at": "2026-09-09T21:22:54.665083+00:00",
+    "glossary_version": "codex-reset-terms-v1"
+  },
+  "2097174560412246215": {
+    "text": "为大家全部重置。与 Astra 一起度过愉快的一周。",
+    "source_sha256": "a7b576705246ef1d4e3c09602bdb460de0168014c34ffac206d3f599c5055554",
+    "method": "browser_machine_translation",
+    "engine": "Google Translate (Chromium browser UI)",
+    "translated_at": "2026-09-12T04:52:30.776915+00:00",
+    "glossary_version": "codex-reset-terms-v2"
+  },
+  "2097043464538264003": {
+    "text": "绝不会放弃你\n绝不会让你失望\n绝不会到处游荡、抛弃你\n绝不会让你哭泣\n绝不会说再见\n绝不会撒谎伤害你\n\n谢谢你读到这里。我们将为全球所有付费订阅用户重置使用额度，让大家在用 Blender 进行有趣的 3D 建模、耗尽额度之后，仍能继续使用 Astra。工作周就要开始了。\n\n预计今天太平洋标准时间（PST）下午 6 点左右发放。",
+    "source_sha256": "27e5167241ce36d0a057c5fc5a33241fe72579660946cc2e5c241684d0ec6505",
+    "method": "assistant_translation_from_full_text",
+    "translated_at": "2026-09-08T08:09:09.034108+00:00"
+  },
   "2096035437299237298": {
     "text": "今天 Astra 提前上线，我们开心极了；你们也一直对我们非常有耐心（其实并没有，不过没关系！）……所以今天我们还会向所有 Plus、Pro 和 Business 用户发放一次完整的存储重置卡。将在今天结束前到账。\n\n祝大家 Astra 日快乐，度过一个精彩的周末。\n\n附：如果你在太平洋时间晚上 8 点前创建账号或升级，也能获得这次重置卡。还来得及！",
     "source_sha256": "bacb77d25506794495e906beea3edaf61858fcd1d91bfab3bcf3e31dfd4b2cd5",
@@ -310,5 +339,19 @@
     "source_sha256": "b9914a4846004f32d8c8fe171572e13e12ca48231e070ba999cad8bbfc5421e7",
     "method": "assistant_translation_from_full_text",
     "translated_at": "2026-09-05T11:55:42.779624+00:00"
+  },
+  "2098685367058612394": {
+    "text": "重置已全部生效。祝好梦。",
+    "source_sha256": "95cd808e297fb42a1b3fd251123155d17ab2d46b59bf7b840257441d5fc1dc89",
+    "method": "codex_cli",
+    "engine": "gpt-6-astra",
+    "translated_at": "2026-09-12T19:01:19.416326+00:00"
+  },
+  "2096692394435752258": {
+    "text": "@Gelassoldat @rezoundous 谁说过一会儿不会重置呢 👀",
+    "source_sha256": "f88d56341d467d1c9eda3115b388cb6d57d4b7e79c3b13bb713390724dcbaf60",
+    "method": "codex_cli",
+    "engine": "gpt-6-astra",
+    "translated_at": "2026-09-12T19:03:33.034110+00:00"
   }
 }

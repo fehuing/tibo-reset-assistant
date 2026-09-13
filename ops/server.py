@@ -52,8 +52,13 @@ def collect_cycle(state, status):
     print(json.dumps({'collection': public['state'], 'codes': {k: v['code'] for k, v in public['stages'].items()}}), flush=True)
 
 
-def poll(state, stop, args, status):
+def poll(state, stop, args, status, ai=None):
     while not stop.is_set():
+        if ai is not None:
+            ai.collect()
+            status.schedule()
+            stop.wait(status.interval)
+            continue
         collect_cycle(state, status)
         try:
             if args.capture:
@@ -154,16 +159,24 @@ def serve(root, args):
     origins = {f'http://localhost:{args.port}', f'http://127.0.0.1:{args.port}', 'http://localhost:4175', 'http://127.0.0.1:4175'}
     origins.update(value.strip().rstrip('/') for value in os.getenv('ALLOWED_ORIGINS', '').split(',') if value.strip())
     reactions.ALLOWED_ORIGINS = origins
-    status = CollectionStatus(args.live, int(os.getenv('POLL_SECONDS', '120')))
+    status = CollectionStatus(args.live, int(os.getenv('POLL_SECONDS', '120')), ai=getattr(args, 'ai', False))
     server = ReactionServer((args.host, args.port), handler(root, state, args.port, status))
     stop = threading.Event()
     worker = None
+    ai = None
     if args.live:
-        worker = threading.Thread(target=poll, args=(state, stop, args, status), daemon=True)
+        atomic_json(state / 'ai-config.json', {'enabled': bool(getattr(args, 'ai', False))})
+        if getattr(args, 'ai', False):
+            from ai_runtime import AIRuntime
+            ai = AIRuntime(state, status, stop)
+            ai.start()
+        worker = threading.Thread(target=poll, args=(state, stop, args, status, ai), daemon=True)
         worker.start()
     print(f'Tibo: http://localhost:{args.port}/ | live={args.live} | data={state}', flush=True)
     try:
         server.serve_forever()
     finally:
         stop.set()
+        if ai is not None:
+            ai.close()
         server.server_close()

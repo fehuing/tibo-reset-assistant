@@ -25,3 +25,6 @@ project.private.config.json
 translation.json
 .DS_Store
 Thumbs.db
+.codex/
+**/auth.json
+codex-auth/

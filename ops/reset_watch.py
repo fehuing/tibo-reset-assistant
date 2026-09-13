@@ -120,12 +120,20 @@ def hint_from_post(post, now, discovered_via):
 def watch_state(watch, feed, now):
     if not watch:
         return 'empty'
-    if any(event.get('status') == 'announced' and date(event['announced_at']) > date(watch['observed_at']) for event in feed.get('events', [])):
+    if any(event.get('status') == 'announced' and event.get('reset_type', 'regular') == watch.get('reset_type', 'regular') and
+           ((event.get('watch_episode_id') == watch['episode_id']) if event.get('confirmation_method') == 'private_reset_report' else
+            (watch['episode_id'] in event.get('record_ids', []) or date(event['announced_at']) > date(watch['observed_at'])))
+           for event in feed.get('events', [])):
         return 'new_announcement'
+    if watch.get('window_basis') == 'until_reset_confirmed':
+        return 'active'
     return 'expired' if now >= date(watch['expires_at']) else 'active'
 
 
 def collect_watch(state, get=get_document, now=None):
+    from ai_publication import enabled
+    if enabled(state):
+        return read_json(state / 'watch.json')
     now = now or dt.datetime.now(dt.timezone.utc)
     previous = read_json(state / 'watch.json')
     config = read_json(state / 'watch-config.json')

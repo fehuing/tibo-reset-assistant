@@ -1,31 +1,33 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
-import { ArrowDown, ArrowRight, ArrowUpRight, Check, Clock3, Copy, History, Moon, Radio, RefreshCw, Sun, Zap } from 'lucide-react';
+import { ArrowDown, ArrowUp, ArrowRight, ArrowUpRight, Check, Clock3, Copy, History, Moon, Radio, RefreshCw, Sun, Zap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { ResetCalendar } from '@/components/reset-calendar';
 import { ReactionButton } from '@/components/reaction-button';
 import { ResetWatch } from '@/components/reset-watch';
 import { PostContent } from '@/components/post-content';
+import { AnnouncementCard } from '@/components/announcement-card';
 import { AnnouncementStatus } from '@/components/announcement-status';
-import { CollectionNotice } from '@/components/collection-notice';
-import type { CollectionStatus } from '@/lib/collection-status';
 import { announcementCopy, calendarRecords, type ResetEvent, type EventStats } from '@/lib/announcements';
 import { formatElapsed, formatStamp, resetLabel, text as i18nText, type Locale } from '@/lib/i18n';
-import type { ResetRecord } from '@/lib/post-content';
-import { siteConfig } from '@/lib/site-config';
+import type { ResetRecord, AnnouncementRecord } from '@/lib/post-content';
 import { runtimeBase } from '@/lib/runtime-base';
 import { recordLink, validPostId } from '@/lib/share';
+import { latestReset } from '@/lib/latest-reset';
+import { CollectionNotice } from '@/components/collection-notice';
+import type { CollectionStatus } from '@/lib/collection-status';
+import { siteConfig } from '@/lib/site-config';
 
 type FeedSource = {
-  active: 'x_direct' | 'codex_resets_fallback';
+  active: 'x_direct' | 'codex_resets_fallback' | 'bundled_snapshot';
   primary: string;
-  fallback: string;
+  fallback?: string;
   fallback_used: boolean;
   recent_posts_seen?: number;
   reset_posts_matched?: number;
+  coverage?: { status: 'unavailable' | 'partial' | 'ok'; complete?: boolean; last_success_at?: string | null };
 };
 type Feed = {
   collection_status?: CollectionStatus;
@@ -36,6 +38,7 @@ type Feed = {
   history_complete: boolean;
   source: FeedSource;
   records: ResetRecord[];
+  announcements?: AnnouncementRecord[];
   events?: ResetEvent[];
   event_stats?: EventStats;
   stats: { total: number; avg_interval_days: number | null; longest_interval_days: number | null };
@@ -43,10 +46,11 @@ type Feed = {
 function isFeed(value: unknown): value is Feed {
   if (!value || typeof value !== 'object') return false;
   const f = value as Feed;
+  if (f.announcements !== undefined && (!Array.isArray(f.announcements) || !f.announcements.every(r => r && typeof r.id === 'string' && Number.isFinite(Date.parse(r.announced_at)) && typeof r.excerpt === 'string' && /^https:\/\/x\.com\/thsottiaux\/status\/[0-9]+$/.test(r.source_url)))) return false;
   if (f.events !== undefined && (!Array.isArray(f.events) || !Array.isArray(f.records) || !f.events.every(e => e && ['planned', 'announced', 'uncertain'].includes(e.status) && Array.isArray(e.record_ids) && e.record_ids.every(id => f.records.some(r => r.id === id)) && f.records.some(r => r.id === e.record_id && r.announced_at === e.announced_at)))) return false;
   if (f.event_stats && (!Number.isSafeInteger(f.event_stats.total) || f.event_stats.total !== f.events?.filter(e => e.status === 'announced').length || !['avg_interval_days', 'longest_interval_days'].every(key => { const v = f.event_stats![key as 'avg_interval_days' | 'longest_interval_days']; return v === null || Number.isFinite(v) && v >= 0; }))) return false;
   return f.schema_version === 1 && Number.isFinite(Date.parse(f.checked_at)) && Array.isArray(f.records) && !!f.stats &&
-    !!f.source && (f.source.active === 'x_direct' || f.source.active === 'codex_resets_fallback') &&
+    !!f.source && (f.source.active === 'x_direct' || f.source.active === 'codex_resets_fallback' || (f.mode === 'snapshot' && f.source.active === 'bundled_snapshot')) &&
     f.records.every(r => typeof r.id === 'string' && Number.isFinite(Date.parse(r.announced_at)) && typeof r.excerpt === 'string' &&
       /^https:\/\/x\.com\/thsottiaux\/status\/[0-9]+$/.test(r.source_url));
 }
@@ -59,8 +63,7 @@ export default function Home() {
   const [dark, setDark] = useState(false);
   const [copied, setCopied] = useState(false);
   const [copyError, setCopyError] = useState(false);
-  const [filter, setFilter] = useState('all');
-  const [limit, setLimit] = useState(6);
+  const [recordsExpanded, setRecordsExpanded] = useState(false);
   const [locale, setLocale] = useState<Locale>('zh');
   const [selectedPost, setSelectedPost] = useState('');
   const [sharedPost, setSharedPost] = useState('');
@@ -120,14 +123,21 @@ export default function Home() {
     document.querySelector('meta[name="description"]')?.setAttribute('content', i18nText(locale, 'documentDescription'));
   }, [locale]);
 
-  const latest = feed?.records[0];
+  const reset = latestReset(feed?.records ?? [], now);
+  const latest = reset?.record;
   const c = announcementCopy[locale];
   const eventStats = feed?.event_stats;
-  const selectedRecord = feed?.records.find(record => record.id === selectedPost);
-  const age = latest ? formatElapsed(latest.announced_at, now, locale) : null;
-  const stale = !!feed && now - Date.parse(feed.checked_at) > 8 * 60000;
-  const collectionProblem = !!feed?.collection_status && feed.collection_status.state !== 'ok';
-  const filtered = (feed?.records ?? []).filter(r => filter === 'all' || r.reset_type === filter);
+  const announcements = feed?.announcements ?? feed?.records ?? [];
+  const selectedRecord = announcements.find(record => record.id === selectedPost)
+    ?? (feed ? calendarRecords(feed.records, feed.events).find(record => record.id === selectedPost) : undefined);
+  const age = latest ? reset?.at ? formatElapsed(reset.at, now, locale) : { value: '—', unit: '', detail: t('resetTimeUnknown') } : null;
+  const stale = !!feed && feed.mode !== 'snapshot' && feed.collection_status?.enabled !== false && now - Date.parse(feed.checked_at) > 8 * 60000;
+  const collectionProblem = !!feed?.collection_status && !['ok', 'disabled'].includes(feed.collection_status.state);
+  const coverage = feed?.source.coverage?.status;
+  const collectorUnavailable = coverage === 'unavailable';
+  const collectorPartial = coverage === 'partial';
+  const collectorWarning = collectorUnavailable || collectorPartial || collectionProblem;
+  const filtered = announcements;
 
   function toggleTheme() {
     const next = !dark;
@@ -161,7 +171,7 @@ export default function Home() {
     const url = new URL(window.location.href); url.searchParams.delete('post');
     window.history.replaceState(null, '', url);
   }
-  async function sharePost(record: ResetRecord) {
+  async function sharePost(record: AnnouncementRecord) {
     try {
       const url = recordLink(record.id, locale);
       if (navigator.share) await navigator.share({ title: t('brand'), text: formatStamp(record.announced_at, locale), url });
@@ -202,8 +212,8 @@ export default function Home() {
         <section id="latest" className="latest-card paper-card">
           <div className="latest-topline">
             <span className="eyebrow">{t('latest')} {locale === 'zh' && <span className="muted-english">/ LATEST RESET</span>}</span>
-            <span className={'status-badge ' + (failure || stale || collectionProblem ? 'status-warning' : '')}>
-              <span className="status-dot" />{feed?.mode === 'snapshot' ? (locale === 'zh' ? '历史快照' : 'Snapshot') : !feed ? failure ? t('disconnected') : t('reading') : failure || stale || collectionProblem ? t('delayed') : t('tracking')}
+            <span className={'status-badge ' + (failure || stale || collectorWarning ? 'status-warning' : '')}>
+              <span className="status-dot" />{feed?.mode === 'snapshot' ? (locale === 'zh' ? '历史快照' : 'Snapshot') : !feed ? failure ? t('disconnected') : t('reading') : collectorUnavailable ? t('collectorUnavailableBadge') : failure || stale || collectionProblem ? t('delayed') : collectorPartial ? t('collectorPartialBadge') : t('tracking')}
             </span>
           </div>
           {age && latest ? (
@@ -220,7 +230,7 @@ export default function Home() {
               <div className="latest-bottom">
                 <div className="event-info">
                   <span className={'event-type ' + latest.reset_type}>{resetLabel(locale, latest.reset_type)}</span>
-                  <time dateTime={latest.announced_at}>{formatStamp(latest.announced_at, locale)} <span>{t('beijing')}</span></time>
+                  {reset?.at && <time dateTime={reset.at}>{t('resetTime')} {formatStamp(reset.at, locale)} <span>{t('beijing')}</span></time>}
                 </div>
                 <div className="latest-actions">
                   <ReactionButton locale={locale} now={now} />
@@ -231,8 +241,8 @@ export default function Home() {
           ) : (
             <div className="loading-state" role="status">
               <Radio size={38} />
-              <h2>{failure ? t('failedTitle') : t('loadingTitle')}</h2>
-              <p>{failure ? t('failedText') : t('loadingText')}</p>
+              <h2>{failure ? t('failedTitle') : feed ? t('noConfirmedReset') : t('loadingTitle')}</h2>
+              <p>{failure ? t('failedText') : feed ? t('awaitingConfirmedReset') : t('loadingText')}</p>
             </div>
           )}
         </section>
@@ -240,52 +250,35 @@ export default function Home() {
         <div className="sync-row">
           <div className="sync-info">
             <p><Clock3 size={14} /><span>{feed ? t('checkedAt', { time: formatStamp(feed.checked_at, locale, true) }) : t('waitingFirst')}</span></p>
-            {feed && <span className={'source-chip ' + (feed.source.fallback_used ? 'fallback' : 'direct')}><span className="source-pulse" />{feed.source.fallback_used ? t('sourceFallback') : t('sourceDirect')}</span>}
+            {feed && <span className={'source-chip ' + (feed.source.fallback_used || collectorWarning ? 'fallback' : 'direct')}><span className="source-pulse" />{collectorUnavailable ? t('collectorUnavailableBadge') : collectorPartial ? t('collectorPartialBadge') : feed.mode === 'snapshot' ? (locale === 'zh' ? '历史快照' : 'Snapshot') : collectionProblem ? t('delayed') : feed.source.fallback_used ? t('sourceFallback') : t('sourceDirect')}</span>}
           </div>
           <Button className="refresh-button" variant="ghost" onClick={() => void refresh()} disabled={loading}>
             <RefreshCw size={14} className={loading ? 'spin' : ''} />{loading ? t('checking') : t('checkUpdates')}
           </Button>
         </div>
-        {(failure || stale) && <div className="error-note" role="status">{feed ? t('staleCached') : t('unavailable')}</div>}
+        {(failure || stale || collectorUnavailable) && <div className="error-note" role="status">{collectorUnavailable ? t('collectorUnavailable') : feed ? t('staleCached') : t('unavailable')}</div>}
+        {collectorPartial && <p className="event-stats-note" role="status">{t('collectorPartial')}</p>}
 
         <section className="stats-grid" aria-label={t('statsAria')}>
-          <div className="stat-card yellow"><span className="stat-label">{c.events} <Zap size={17} /></span><div className="stat-value">{eventStats?.total ?? '—'}{t('totalUnit') && <span>{t('totalUnit')}</span>}</div><span className="stat-caption">{c.posts} · {feed?.records.length ?? '—'}</span></div>
+          <div className="stat-card yellow"><span className="stat-label">{c.events} <Zap size={17} /></span><div className="stat-value">{eventStats?.total ?? '—'}{t('totalUnit') && <span>{t('totalUnit')}</span>}</div><span className="stat-caption">{c.posts} · {feed ? announcements.length : '—'}</span></div>
           <div className="stat-card pink"><span className="stat-label">{t('average')} <Clock3 size={17} /></span><div className="stat-value">{eventStats?.avg_interval_days?.toFixed(1) ?? '—'}<span>{t('daysUnit')}</span></div><span className="stat-caption">{c.events}</span></div>
           <div className="stat-card blue"><span className="stat-label">{t('longest')} <History size={17} /></span><div className="stat-value">{eventStats?.longest_interval_days?.toFixed(1) ?? '—'}<span>{t('daysUnit')}</span></div><span className="stat-caption">{c.events}</span></div>
         </section>
         <p className="event-stats-note">{c.statsNote}</p>
-        {eventStats && <p className="event-breakdown">{t('regular')} {eventStats.regular} · {t('banked')} {eventStats.banked} · {c.planned} {eventStats.planned} · {c.uncertain} {eventStats.uncertain}</p>}
-        <ResetCalendar records={calendarRecords(feed?.records ?? [], feed?.events)} now={now} ready={!!feed?.events} locale={locale} onSelect={openPost} />
+        {eventStats && <p className="event-breakdown">{t('regular')} {eventStats.regular} · {t('banked')} {eventStats.banked}{eventStats.planned > 0 && <> · {c.planned} {eventStats.planned}</>}{eventStats.uncertain > 0 && <> · {c.uncertain} {eventStats.uncertain}</>}</p>}
+        <ResetCalendar records={calendarRecords(feed?.records ?? [], feed?.events)} now={now} ready={!!feed} locale={locale} onSelect={openPost} />
         <p className="event-stats-note">{c.calendarNote}</p>
 
         <section id="announcements" className="announcements-section">
           {selectedPost && feed && !selectedRecord && <p role="status" className="error-note">{c.missing}</p>}
-          <div className="section-heading"><div><span className="eyebrow">{t('logKicker')}</span><h2>{t('logTitle')}<span className="heading-dot">.</span></h2></div><span className="log-count">{feed ? t('announcementCount', { count: feed.records.length }) : '—'}</span></div>
-          <Tabs value={filter} onValueChange={value => { setFilter(String(value)); setLimit(6); }} className="announcement-tabs">
-            <TabsList className="filter-tabs">
-              <TabsTrigger value="all">{t('all')}</TabsTrigger>
-              <TabsTrigger value="regular">{t('regular')}</TabsTrigger>
-              <TabsTrigger value="banked">{t('banked')}</TabsTrigger>
-            </TabsList>
-            {['all', 'regular', 'banked'].map(tab => (
-              <TabsContent value={tab} key={tab}>
-                {filtered.length ? <div className="announcement-list">{filtered.slice(0, limit).map((record, index) => (
-                  <article className="announcement paper-card" key={record.id} id={'post-' + record.id}>
-                    <div className="announcement-rail"><span className={'event-icon ' + record.reset_type}><img src="/radar/tibo-avatar.jpg" alt="" width="48" height="48" /></span><span className="record-index">{String((feed?.records.length ?? 0) - (feed?.records.findIndex(r => r.id === record.id) ?? index)).padStart(2, '0')}</span></div>
-                    <div className="announcement-body">
-                      <div className="announcement-meta"><span className={'event-type ' + record.reset_type}>{resetLabel(locale, record.reset_type)}</span><time dateTime={record.announced_at}>{formatStamp(record.announced_at, locale)}</time></div>
-                      <AnnouncementStatus record={record} locale={locale} detail />
-                      <PostContent record={record} locale={locale} />
-                      <div className="record-actions"><Button variant="ghost" onClick={() => openPost(record.id)}>{c.openRecord}</Button><Button variant="ghost" onClick={() => void sharePost(record)}>{sharedPost === record.id ? t('copied') : c.shareRecord} <ArrowUpRight size={16} /></Button></div>
-                      {!!record.related_record_ids?.length && <div className="related-posts"><strong>{c.related}</strong>{record.related_record_ids.map(id => { const related = feed?.records.find(r => r.id === id); return related ? <a key={id} href={'?lang=' + locale + '&post=' + encodeURIComponent(id)}>{formatStamp(related.announced_at, locale)} ↗</a> : null; })}</div>}
-                      <div className="announcement-bottom"><span>{record.source_type === 'observed' ? t('observed') : t('author')}</span><a className="source-link" href={record.source_url} target="_blank" rel="noopener noreferrer">{record.source_type === 'observed' ? t('relatedOriginal') : t('fullOriginal')} <ArrowUpRight size={16} /></a></div>
-                    </div>
-                  </article>
-                ))}</div> : <div className="empty-records">{feed ? t('emptyFilter') : t('recordsLoading')}</div>}
-                {filtered.length > limit && <div className="load-more"><Button className="press-button paper" onClick={() => setLimit(value => value + 6)}>{t('loadSix')} <ArrowDown size={17} /></Button><span>{t('shown', { shown: Math.min(limit, filtered.length), total: filtered.length })}</span></div>}
-              </TabsContent>
-            ))}
-          </Tabs>
+          <div className="section-heading announcement-section-heading"><h2>{locale === 'zh' ? 'Codex 重置公告' : 'Codex reset announcements'}</h2><span className="log-count">{locale === 'zh' ? '每一条公告，留作记录' : 'Every announcement, preserved for history'}</span></div>
+          {filtered.length ? <div className="announcement-list">
+            {filtered.slice(0, recordsExpanded ? filtered.length : 3).map(record => <AnnouncementCard key={record.id} record={record} locale={locale} now={now} onOpen={openPost} />)}
+          </div> : <div className="empty-records">{feed ? t('emptyFilter') : t('recordsLoading')}</div>}
+          {filtered.length > 3 && <div className="load-more"><Button className="press-button paper" aria-expanded={recordsExpanded} onClick={() => {
+            setRecordsExpanded(!recordsExpanded);
+            if (recordsExpanded) requestAnimationFrame(() => document.getElementById('announcements')?.scrollIntoView({ block: 'start', behavior: 'instant' }));
+          }}>{recordsExpanded ? t('collapseRecords') : t('expandRecords', { count: filtered.length - 3 })} {recordsExpanded ? <ArrowUp size={17} /> : <ArrowDown size={17} />}</Button><span>{t('shown', { shown: recordsExpanded ? filtered.length : 3, total: filtered.length })}</span></div>}
         </section>
 
         {siteConfig.miniProgramCode && (<aside id="miniprogram" className="mini-program-card paper-card" aria-labelledby="mini-program-title">
@@ -298,6 +291,19 @@ export default function Home() {
             <p>{t('miniProgramScan')}</p>
             <p className="mini-program-search">{t('miniProgramSearch')}<strong lang="zh-CN">Tibo重置助手</strong></p>
             <a className="mini-program-enlarge" href={siteConfig.miniProgramCode} target="_blank" rel="noopener noreferrer">{t('miniProgramEnlarge')} <ArrowUpRight size={16} /></a>
+          </div>
+        </aside>)}
+
+        {siteConfig.officialAccountCode && (<aside id="official-account" className="mini-program-card wechat-contact-card paper-card" aria-labelledby="official-account-title">
+          <a className="mini-program-code" href={siteConfig.officialAccountCode} target="_blank" rel="noopener noreferrer" aria-label={t('officialAccountEnlarge')}>
+            <img src={siteConfig.officialAccountCode} alt={t('officialAccountCodeAlt')} width="460" height="460" loading="lazy" />
+          </a>
+          <div className="mini-program-copy">
+            <p className="mini-program-label">{t('officialAccountLabel')}</p>
+            <h2 id="official-account-title">{siteConfig.officialAccountName}</h2>
+            <p>{t('officialAccountScan')}</p>
+            <p className="mini-program-search">{t('miniProgramSearch')}<strong>{siteConfig.officialAccountName}</strong></p>
+            <a className="mini-program-enlarge" href={siteConfig.officialAccountCode} target="_blank" rel="noopener noreferrer">{t('officialAccountEnlarge')} <ArrowUpRight size={16} /></a>
           </div>
         </aside>)}
 
@@ -323,8 +329,7 @@ export default function Home() {
 
       <Dialog open={!!selectedRecord} onOpenChange={open => { if (!open) closePost(); }}>
         <DialogContent className="record-dialog"><DialogHeader><DialogTitle>{t('brand')} · {c.openRecord}</DialogTitle><DialogDescription>{selectedRecord ? formatStamp(selectedRecord.announced_at, locale) : ''}</DialogDescription></DialogHeader>
-          {selectedRecord && <div className="record-dialog-body"><AnnouncementStatus record={selectedRecord} locale={locale} detail /><PostContent record={selectedRecord} locale={locale} />
-            {!!selectedRecord.related_record_ids?.length && <div className="related-posts"><strong>{c.related}</strong>{selectedRecord.related_record_ids.map(id => <Button key={id} variant="ghost" onClick={() => openPost(id)}>{formatStamp(feed!.records.find(r => r.id === id)!.announced_at, locale)}</Button>)}</div>}
+          {selectedRecord && <div className="record-dialog-body"><PostContent record={selectedRecord} locale={locale} showSummary={false} />
             <div className="record-actions"><a href={selectedRecord.source_url} target="_blank" rel="noopener noreferrer">{t('fullOriginal')} ↗</a><Button onClick={() => void sharePost(selectedRecord)}>{sharedPost === selectedRecord.id ? t('copied') : c.shareRecord}</Button></div>
           </div>}
         </DialogContent>

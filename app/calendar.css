@@ -37,6 +37,7 @@
 .calendar-month { align-self: start; font: 12px/1.2 'Courier New', monospace; color: var(--calendar-muted); white-space: nowrap; }
 .calendar-day { display: block; width: var(--calendar-cell); height: var(--calendar-cell); background: var(--calendar-empty); border: none; border-radius: 6px; padding: 0; position: relative; cursor: pointer; transition: transform .15s cubic-bezier(.34, 1.56, .64, 1); }
 .calendar-day.regular, .calendar-day.banked { background: var(--cell-color); border: 1.5px solid var(--calendar-ink); box-shadow: 1.5px 1.5px 0 var(--shadow); }
+.calendar-day.pending-only, .legend-square.pending-only { border: 1.5px dashed var(--calendar-ink); box-shadow: none; }
 .calendar-day:where(:not(:disabled):not(.calendar-future)):hover, .calendar-day:focus-visible { outline: none; transform: scale(1.22); z-index: 1; }
 .calendar-day.regular:hover, .calendar-day.regular:focus-visible, .calendar-day.banked:hover, .calendar-day.banked:focus-visible { transform: scale(1.25) rotate(6deg); }
 .calendar-day:disabled { cursor: default; opacity: .45; }

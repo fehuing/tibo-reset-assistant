@@ -1,6 +1,7 @@
 """Extract short, attributed reading aids without generating new claims."""
 import re
 from announcement_semantics import source_body
+from translation_state import matching_translation
 
 
 def sentences(body, chinese=False):
@@ -40,8 +41,9 @@ def attach_briefs(feed):
         source = source_body(record)
         value = {'method': 'source_sentence_extract', 'en': extract(source)}
         translation = record.get('translation_zh', {})
-        if record.get('text_complete') and translation.get('source_sha256') == record.get('full_text_sha256') and translation.get('text'):
+        if matching_translation(record):
             value['zh'] = extract(translation['text'], True)
+            value['source_sha256'] = record['full_text_sha256']
             value['translation_method'] = translation.get('method', 'archived_translation')
         record['brief'] = value
     return feed

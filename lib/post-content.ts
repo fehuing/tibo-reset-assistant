@@ -1,3 +1,4 @@
+import { runtimeBase } from './runtime-base';
 export type ResetRecord = {
   id: string;
   reset_type: string;
@@ -6,7 +7,12 @@ export type ResetRecord = {
   source_url: string;
   source_type: string;
   status?: 'planned' | 'announced' | 'uncertain';
+  source_status?: 'planned' | 'announced' | 'uncertain';
+  historical_verification?: { method: string; initialized_at: string; baseline_sha256: string; status: string };
+  reset_confirmation?: { method: string; kind: string; reset_at: string; verified_at: string; time_basis?: string };
+  confirmation?: { method: string; source_url: string; quote: string; published_at: string; verified_at?: string };
   assessment?: { rule: string; quote: string; source_sha256: string; method: string };
+  ai_analysis?: { method: string; model?: string };
   event_id?: string;
   related_record_ids?: string[];
   source_text?: string;
@@ -14,12 +20,16 @@ export type ResetRecord = {
   text_complete?: boolean;
   full_text_sha256?: string;
   translation_zh?: { text: string; source_sha256: string; method?: string };
+  translation_status?: { state: string; source_sha256?: string; next_retry_at?: string; error_code?: string };
   brief?: { method: string; en: { summary: string; scope: string; action: string }; zh?: { summary: string; scope: string; action: string }; translation_method?: string };
   screenshot?: { file: string; sha256: string; width: number; height: number; captured_at: string; source_url: string;
     thumbnail?: { file: string; sha256: string; width: number; height: number; source_sha256: string; source_url: string } };
 };
 
-export function postText(record: ResetRecord) {
+// Display-only posts can share an event, or have no confirmed event yet.
+export type AnnouncementRecord = Omit<ResetRecord, 'reset_type'> & { reset_type?: string };
+
+export function postText(record: AnnouncementRecord) {
   const complete = record.text_complete === true && typeof record.full_text === 'string' && record.full_text.length > 0 && record.full_text.length <= 60000;
   const original = complete ? record.full_text! : typeof record.source_text === 'string' && record.source_text ? record.source_text : record.excerpt;
   const translation = record.translation_zh;
@@ -28,16 +38,16 @@ export function postText(record: ResetRecord) {
   return { original, complete, translation: translated ? translation!.text : '' };
 }
 
-export function postScreenshot(record: ResetRecord) {
+export function postScreenshot(record: Pick<ResetRecord, 'source_url' | 'screenshot'>) {
   const shot = record.screenshot;
   const id = /^https:\/\/x\.com\/thsottiaux\/status\/(\d+)$/.exec(record.source_url)?.[1];
   if (!shot || !id || typeof shot.sha256 !== 'string' || !/^[a-f0-9]{64}$/.test(shot.sha256) ||
       shot.file !== `${id}-${shot.sha256.slice(0, 16)}.jpg` || shot.source_url !== record.source_url ||
       typeof shot.captured_at !== 'string' || !Number.isFinite(Date.parse(shot.captured_at)) || !Number.isInteger(shot.width) || !Number.isInteger(shot.height) ||
       shot.width < 1 || shot.height < 1 || shot.width > 24000 || shot.height > 24000) return null;
-  // Both the canonical domain and the existing /radar/ address use this archive.
+  // Resolve archived captures on this deployment at either / or /radar/.
   const thumb = shot.thumbnail;
   const validThumb = thumb && /^[a-f0-9]{64}$/.test(thumb.sha256) && thumb.file === `${id}-${thumb.sha256.slice(0, 16)}.jpg` && thumb.source_sha256 === shot.sha256 && thumb.source_url === record.source_url && Number.isInteger(thumb.width) && thumb.width > 0 && thumb.width <= 440 && Number.isInteger(thumb.height) && thumb.height > 0 && thumb.height <= 24000;
-  return { ...shot, url: '/radar/post-images/' + shot.file,
-    thumbnail: validThumb ? { ...thumb, url: '/radar/post-images/' + thumb.file } : null };
+  return { ...shot, url: runtimeBase() + '/post-images/' + shot.file,
+    thumbnail: validThumb ? { ...thumb, url: runtimeBase() + '/post-images/' + thumb.file } : null };
 }

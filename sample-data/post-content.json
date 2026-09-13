@@ -1,7 +1,114 @@
 {
   "posts": {
+    "2098612714704891959": {
+      "source_url": "https://x.com/thsottiaux/status/2098612714704891959",
+      "full_text": "Hi Astra users. A reset and a quick update on quality issues that have been posted around.\n\nWorking with some of you, we have found and fixed the following issues:\n- Some skills written for previous models were triggering too often or preventing the model from checking its work.\n- An opt-in context management experiment that could cause early stops or replies to older messages. We've disabled it. Our rough estimate is that 4-5k users were affected by this experiment.\n- We've also removed some badly configured engines that resulted in a measured quality degradation for a long tail of traffic flowing through them.\n\nWe’ve also made some more minor improvements and things should feel significantly better across the board. More consistent follow-through, better tracking of your latest message, and better checks on the work as it’s going through the motions.\n\nThe examples posted and all the users who worked directly with us were incredibly useful in helping fix things quickly. Always grateful for this incredible community.\n\nAnd of course, a reset is also landing by midnight today.",
+      "full_text_sha256": "3bf824911a096df2ce5c4a694c7d1454257c4b7f889daf5d55fa415f6ba75c35",
+      "text_captured_at": "2026-09-12T03:24:30.612097+00:00",
+      "screenshot": {
+        "file": "2098612714704891959-74c21d125538e8a4.jpg",
+        "sha256": "74c21d125538e8a486aad9ff24733a7aecfdcd83cb80519c107a0a7ee556972f",
+        "width": 786,
+        "height": 1354,
+        "captured_at": "2026-09-12T03:24:32.124221+00:00",
+        "source_url": "https://x.com/thsottiaux/status/2098612714704891959",
+        "method": "public_html_capture",
+        "capture_version": 2,
+        "document_sha256": "790957227be4ed744fad6361e4f0e1309b70eaa78f44176bf1721d303dc4763f",
+        "thumbnail": {
+          "file": "2098612714704891959-86910a501c5bdc73.jpg",
+          "sha256": "86910a501c5bdc73a51bda5c179eca840a341df673e5b1b90442f79eb53caaed",
+          "width": 440,
+          "height": 758,
+          "source_sha256": "74c21d125538e8a486aad9ff24733a7aecfdcd83cb80519c107a0a7ee556972f",
+          "source_url": "https://x.com/thsottiaux/status/2098612714704891959",
+          "captured_at": "2026-09-12T03:24:32.124221+00:00"
+        }
+      },
+      "status": "ready"
+    },
+    "2097752790177370535": {
+      "source_url": "https://x.com/thsottiaux/status/2097752790177370535",
+      "full_text": "There was a bit of a kerfuffle this morning with some banked resets not fully applying when used in ChatGPT Work and Codex. Everyone who used one in the affected time window is getting another one and an email to apologize.",
+      "full_text_sha256": "fa88a472616b58d0d0e335054ef8730ae895e63d2c5bd73c99169771765395a7",
+      "text_captured_at": "2026-09-09T18:26:59.682800+00:00",
+      "screenshot": {
+        "file": "2097752790177370535-9fc201fec296d721.jpg",
+        "sha256": "9fc201fec296d7213322290569e924ccaa03585e7428c0a5b2b3f941cf829906",
+        "width": 816,
+        "height": 474,
+        "captured_at": "2026-09-09T18:27:03.683954+00:00",
+        "source_url": "https://x.com/thsottiaux/status/2097752790177370535",
+        "method": "public_html_capture",
+        "capture_version": 2,
+        "document_sha256": "f32ce428e016428d4b47526d907a03f644b64b938c222416192a90e5d88d091c",
+        "thumbnail": {
+          "file": "2097752790177370535-35b9397765014b30.jpg",
+          "sha256": "35b9397765014b305263b7152cb0d40bb7ab3f59b9d1e4326cc415ced1b0aba9",
+          "width": 440,
+          "height": 256,
+          "source_sha256": "9fc201fec296d7213322290569e924ccaa03585e7428c0a5b2b3f941cf829906",
+          "source_url": "https://x.com/thsottiaux/status/2097752790177370535",
+          "captured_at": "2026-09-09T18:27:03.683954+00:00"
+        }
+      },
+      "status": "ready"
+    },
+    "2097174560412246215": {
+      "source_url": "https://x.com/thsottiaux/status/2097174560412246215",
+      "full_text": "All reset for everyone. Enjoy the week with Astra.",
+      "full_text_sha256": "a7b576705246ef1d4e3c09602bdb460de0168014c34ffac206d3f599c5055554",
+      "text_captured_at": "2026-09-10T15:52:50.139757+00:00",
+      "screenshot": {
+        "file": "2097174560412246215-c3881c98c306b4ef.jpg",
+        "sha256": "c3881c98c306b4efd3d31881436190e666ffc801d7de98aedebb964a495f95a5",
+        "width": 816,
+        "height": 646,
+        "captured_at": "2026-09-10T15:52:51.726604+00:00",
+        "source_url": "https://x.com/thsottiaux/status/2097174560412246215",
+        "method": "public_html_capture",
+        "capture_version": 2,
+        "document_sha256": "d2c0b029cdc00065ec4e305ba379afff73a12bd3ac49593aa7fab65ac258412b",
+        "thumbnail": {
+          "file": "2097174560412246215-4637807bd46733f8.jpg",
+          "sha256": "4637807bd46733f8a64af7b59fcb852867b6f79dbafe3b314d8d2f786bf1ecf3",
+          "width": 440,
+          "height": 348,
+          "source_sha256": "c3881c98c306b4efd3d31881436190e666ffc801d7de98aedebb964a495f95a5",
+          "source_url": "https://x.com/thsottiaux/status/2097174560412246215",
+          "captured_at": "2026-09-10T15:52:51.726604+00:00"
+        }
+      },
+      "status": "ready"
+    },
+    "2097043464538264003": {
+      "source_url": "https://x.com/thsottiaux/status/2097043464538264003",
+      "full_text": "Never gonna give you up\nNever gonna let you down\nNever gonna run around and desert you\nNever gonna make you cry\nNever gonna say goodbye\nNever gonna tell a lie and hurt you\n\nThanks for reading. We will do a global reset of the usage for all paid subscriptions so that you can keep enjoying Astra after burning through all of it doing fun 3D modeling in blender. The work week is about to start.\n\nLands around 6pm PST today.",
+      "full_text_sha256": "27e5167241ce36d0a057c5fc5a33241fe72579660946cc2e5c241684d0ec6505",
+      "text_captured_at": "2026-09-07T19:29:05.585981+00:00",
+      "screenshot": {
+        "file": "2097043464538264003-c16105eded77363d.jpg",
+        "sha256": "c16105eded77363dfd4e157482a7f172d53e1733484f777778dd8adf120ec2cd",
+        "width": 816,
+        "height": 794,
+        "captured_at": "2026-09-07T19:29:08.071819+00:00",
+        "source_url": "https://x.com/thsottiaux/status/2097043464538264003",
+        "method": "public_html_capture",
+        "capture_version": 2,
+        "document_sha256": "b2c31a69fb284f485511c4b54963f1e20cbe8bc786f3d4e5389518b19d2baeba",
+        "thumbnail": {
+          "file": "2097043464538264003-015805b78ceccb78.jpg",
+          "sha256": "015805b78ceccb78c625c4b68339856429796cada3f0e5ebb8e16e102e7676ac",
+          "width": 440,
+          "height": 428,
+          "source_sha256": "c16105eded77363dfd4e157482a7f172d53e1733484f777778dd8adf120ec2cd",
+          "source_url": "https://x.com/thsottiaux/status/2097043464538264003",
+          "captured_at": "2026-09-07T19:29:08.071819+00:00"
+        }
+      },
+      "status": "ready"
+    },
     "2096035437299237298": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2096035437299237298",
       "full_text": "Because we are beyond happy to have Astra rolled out today ahead of schedule and you have been super patient with us (not really, but it’s ok!)… we will do the full banked reset today too for all Plus, Pro and Business users. Lands end of day.\n\nHappy Astra day and enjoy a phenomenal weekend. \n\nPS: If you create the account or upgrade before 8pm PT you will get it too. Still time!",
       "full_text_sha256": "bacb77d25506794495e906beea3edaf61858fcd1d91bfab3bcf3e31dfd4b2cd5",
@@ -24,10 +131,10 @@
           "source_url": "https://x.com/thsottiaux/status/2096035437299237298",
           "captured_at": "2026-09-05T11:42:05.750938+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2095979536043401428": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2095979536043401428",
       "full_text": "Some Plus and Business users won't yet get access to Astra today, we've got you covered with a banked reset. Lands by end of day and if you create your account by 8pm PT then you'll get it too.",
       "full_text_sha256": "84b24fb8b31798ea157ca9b1553ad97fc0f4e8bb83a91522acc379cc3d6721e3",
@@ -50,10 +157,10 @@
           "source_url": "https://x.com/thsottiaux/status/2095979536043401428",
           "captured_at": "2026-09-05T11:40:02.105777+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2095651088502591861": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2095651088502591861",
       "full_text": "We will give one banked reset for every day you don't have access to Astra on your paid ChatGPT plan, starting today.  Team is moving mountains to give access as fast as we can.\n\nFirst one will land in ~ 3 hours. There is still time to create your account if you don't have one.",
       "full_text_sha256": "62d2d08fd94e8f7c644614e1f92053a8b0f8d610ee6348542a435d360a50fac5",
@@ -76,10 +183,10 @@
           "source_url": "https://x.com/thsottiaux/status/2095651088502591861",
           "captured_at": "2026-09-05T11:42:12.747280+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2094251180121854309": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2094251180121854309",
       "full_text": "What I wanted to say yesterday is that we hit 25M active users and to celebrate we have now reset usage for all paid subscriptions for ChatGPT Work and Codex.\n\nSee you see for more news from The Reset Company.",
       "full_text_sha256": "634edb58318a7aceca6aa91d5c6c7f38b2f84de6b98a60e77504475be04727aa",
@@ -102,10 +209,10 @@
           "source_url": "https://x.com/thsottiaux/status/2094251180121854309",
           "captured_at": "2026-09-05T11:42:19.611764+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2093801758665715784": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2093801758665715784",
       "full_text": "We are reseting usage for all paid users of Codex and ChatGPT Work.\n\nPlease continue reading for an update on Codex usage limits. The team has been working around the clock, going through thousands of reports and shipping fixes.\n\nDepending on how you use Codex, you should see your usage go between 10% and 50% further than before.\n\nWe really went with a fine comb, with many uncovered small things being longstanding and here is what we found and fixed:\n- Compaction. We were keeping old images during compaction, sometimes making the context large enough to trigger compaction again. After the fix, usage dropped around 10% for users making heavy use of images. Fixed.\n- Memory. Background memory workers could inherit Stop hooks and keep running when the hook wouldn’t let them finish. This affected fewer than 1% of users, with the long tail being pretty bad and we saw one example thread check whether it could stop 15,000 times. Fixed.\n- Goals. In some cases, a set /goal could finish and then keep going past the intended stop condition, or the model would keep retrying broken tools without stopping. We saw examples consume anywhere from 15% to 70% of a weekly allowance. Fixed.\n- Automations. Some custom schedules could run more frequently than configured. Fixed.\n- Subagents. Smaller models (e.g. Luna) sometimes picked more capable helpers without being explicitly asked. The same was true where the orchestrating model not running in /fast mode could request sub-agents to run /fast. Fixed.\n- Computer History. The older implementation could lead to repeatedly summarizing overlapping activity. For some cases we saw it consume up to one fifth of the weekly usage per week. Fixed.\n- Rolling task summaries. Ordinary turns were triggering extra background requests. These added about 1% to token usage. Small each time, but it adds up. We have disabled this.\n- MCP. Some tool results could be encoded twice. We also found tool instructions getting cut off and fetched again. Fixed.\n\nWe’ve also made architectural changes to prevent these from regressing and our teams will get paged if it happens regardless. We are also working on showing you directly in the app where your usage goes so you don’t have to guess.\n\nGoes without saying that we’re resetting usage limits and I hope you enjoy a very nice Saturday!",
       "full_text_sha256": "8a003b13ce8f82fdd5166afb23aa95825bb51591c2c0f44174480261b8e9dc0e",
@@ -129,10 +236,10 @@
           "source_url": "https://x.com/thsottiaux/status/2093801758665715784",
           "captured_at": "2026-09-05T11:57:34.092784+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2093014447833116908": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2093014447833116908",
       "full_text": "Never slept better and feeling reseted. Brand new me and brand new usage for all ChatGPT Work and Codex users. Regaining my youth one button press at a time.\n\nHappy Thursday",
       "full_text_sha256": "f774af5a44590decdcf3356fb1d25f94fea47644d5f76f965f8091a407645ac0",
@@ -155,10 +262,10 @@
           "source_url": "https://x.com/thsottiaux/status/2093014447833116908",
           "captured_at": "2026-09-05T11:42:32.540397+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2092311059197808936": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2092311059197808936",
       "full_text": "@dtzy_88 Ah yeah, forgot to say",
       "full_text_sha256": "d248df45bb2087b2c23111cb88fa25f9a6bdac7a48a0cc1c2ac197fa6887528c",
@@ -181,10 +288,10 @@
           "source_url": "https://x.com/thsottiaux/status/2092311059197808936",
           "captured_at": "2026-09-05T11:53:34.403067+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2091688655828246890": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2091688655828246890",
       "full_text": "Good Sunday. Reset has been propagated to accounts and we landed some fixes to usage for things mentioned yesterday as issues we found. You should feel a positive difference. More to come tomorrow and will keep communicating.",
       "full_text_sha256": "e762e59d4d65749236f2afb27f29f2aebe41f9bf5d4fe4cb0fe9ddb3726be853",
@@ -207,10 +314,10 @@
           "source_url": "https://x.com/thsottiaux/status/2091688655828246890",
           "captured_at": "2026-09-05T11:42:44.476410+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2090766694897619318": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2090766694897619318",
       "full_text": "It's me again. I come bearing great news. \n\nFirst of all, we have hit 20M active users for Codex some time this week. Second of all, this is cause for celebration and during the day we will credit every Codex and ChatGPT Work user with a BANKED reset that you can use at your own leisure. And we will have some other good news later too!\n\nNow, on usage limits draining faster, while we're not seeing anything abnormal, we do take it incredibly seriously and there is an ongoing investigation. I will share if we do find anything and my below post is really a clarification on a specific pattern that we did see that I wanted to call out.\n\nGo do something amazing today.",
       "full_text_sha256": "2e3ef7e4fad889291885bdc357673b95487b6d7fd50fa0ded3a86c94dcf3b603",
@@ -233,10 +340,10 @@
           "source_url": "https://x.com/thsottiaux/status/2090766694897619318",
           "captured_at": "2026-09-05T11:42:50.576241+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2087706104814023111": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2087706104814023111",
       "full_text": "Old news actually from a bunch of days ago, but crossed that 15M. Enjoy a nice reset everyone. Landing in the next hour or so, go /fast.",
       "full_text_sha256": "7a3bbf66906a27e2e0ced230d9c19141c98854626831f3b5ff6acb5fbd283df8",
@@ -259,10 +366,10 @@
           "source_url": "https://x.com/thsottiaux/status/2087706104814023111",
           "captured_at": "2026-09-05T11:42:56.809316+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2086972802457063486": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2086972802457063486",
       "full_text": "Hi.\n\nIt is done.",
       "full_text_sha256": "c0eb3254511e441361b5170a8e8b1701cb3123cec407bf0881d3e4396edffdee",
@@ -285,10 +392,10 @@
           "source_url": "https://x.com/thsottiaux/status/2086972802457063486",
           "captured_at": "2026-09-05T11:53:45.790710+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2086188036493344823": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2086188036493344823",
       "full_text": "That's right, GPT-5.6 Sol is awesome and can be used pretty much anywhere, including in the CC harness. \n\nTo celebrate this, together with the fact that I'm not going anywhere... I have reset usage limits for all paid users of ChatGPT Work and Codex. \n\nHave fun out there!",
       "full_text_sha256": "d33d607bb1e2738d1935bceda6add9c3990a272a5a6c4937b275ffa98a086def",
@@ -311,10 +418,10 @@
           "source_url": "https://x.com/thsottiaux/status/2086188036493344823",
           "captured_at": "2026-09-05T11:43:09.289387+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2083395449814229287": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2083395449814229287",
       "full_text": "To celebrate a week of efficiency and let you run 100'000 Luna threads this weekend... that's right... wait for it... I have reset usage limits for Codex and ChatGPT Work.\n\nEnjoy.",
       "full_text_sha256": "9c3a36b44acd0b5133c732aa6ff7272b1ed1d97d2d8b5604e3049ed3a7c8d655",
@@ -337,10 +444,10 @@
           "source_url": "https://x.com/thsottiaux/status/2083395449814229287",
           "captured_at": "2026-09-05T11:43:15.598019+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2082317452755751098": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2082317452755751098",
       "full_text": "Hello people of Sol! I've reset usage limits for all ChatGPT Work and Codex users. Together with that, a quick update on GPT-5.6 Sol usage limits.\n\nOver the past few weeks, many of you have told us that Sol was using your Codex limits faster than expected. To be clear, we have not reduced usage on any subscription plans.\n\nWe’ve been digging into what was happening and have landed several improvements. As a result, we expect your usage to last around 18% longer during typical use of Sol. Some of you should already see significantly larger improvements from today. Tomorrow, we’ll also restore the five-hour limit that we temporarily paused while investigating.\n\nHere’s what we found:\n- GPT-5.6 Sol is much more willing to work for longer, make additional tool calls, and coordinate complex workflows across tools and subagents. That makes it better at solving hard problems, but some tasks were using far more than we intended.\n- Sol also works harder at the same reasoning effort than previous models. High on Sol can use more tokens than High did on GPT-5.5.\n- Programmatic tool calling, also referred to as code mode, gives Sol much more flexibility to run tool calls in parallel or continue working while waiting. But it also led to more responses per turn, more cached input tokens, and higher usage than expected.\n- This was particularly noticeable when Sol was waiting for tool calls to finish or running many web searches. We’ve improved how we handle both cases and are continuing to make code mode more efficient.\n- The impact was also very uneven. The median user actually found Sol quite token efficient, while some power users working on harder tasks saw their usage drain much faster. We were very focused on average and median usage before launch and missed some cases where the long tail could use significantly more usage.\n\nSol is a significant step forward in what Codex can do, but capability and efficiency do not always improve at the same pace, and some issues only become clear once people are using the model at real-world scale. We should have recognized this sooner and been more upfront about it.\n\nYou keep pushing the frontier and we’ll keep improving efficiency and sharing updates as we go.",
       "full_text_sha256": "53e594f5c781e0bbd834e6d3e0560d9fa84d4d2c2346a195c2eafec0a89ad1ae",
@@ -364,10 +471,10 @@
           "source_url": "https://x.com/thsottiaux/status/2082317452755751098",
           "captured_at": "2026-09-05T11:57:46.181712+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2081940052154933696": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2081940052154933696",
       "full_text": "Back at the laptop. The usage limits have been reset for all paid users of Codex and ChatGPT Work. Weeeeeeeee. It's a good day!",
       "full_text_sha256": "f15b297661247b9cbaec26a0555df807fe12770bb67b9eb1bbcf1efb619c94d6",
@@ -390,10 +497,10 @@
           "source_url": "https://x.com/thsottiaux/status/2081940052154933696",
           "captured_at": "2026-09-05T11:43:31.801765+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2081096447718723984": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2081096447718723984",
       "full_text": "We have reset usage limits for all Codex and ChatGPT Work users.\n\nLast night around 2am to 4am we suffered an almost global outage. All well and recovered, but you know what comes next.\n\nWe learn. We reset. Enjoy.",
       "full_text_sha256": "269fafa34d141af75aa19595bf2ff82f34e32bc000aa0392a73a86463f7387a8",
@@ -416,10 +523,10 @@
           "source_url": "https://x.com/thsottiaux/status/2081096447718723984",
           "captured_at": "2026-09-05T11:43:38.294783+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2079609157934886975": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2079609157934886975",
       "full_text": "10M! \n\nNew day, new usage reset for paid users of Codex and ChatGPT Work. Lands in the next hour. Enjoy.",
       "full_text_sha256": "993b9ad22af15f470528f15beb1ceb5d4812a8e4e3479e81e46ad1a40e9b07ec",
@@ -442,10 +549,10 @@
           "source_url": "https://x.com/thsottiaux/status/2079609157934886975",
           "captured_at": "2026-09-05T11:43:44.076505+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2078320950488297917": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2078320950488297917",
       "full_text": "Oops... I did it again. \n\nEnjoy reset usage limits for all paid users for Codex and ChatGPT Work. Super grateful for an incredible team who is iterating at lightspeed and keeping the infra up as we scale faster than ever.\n\nEnjoy the weekend!",
       "full_text_sha256": "6b1d49ce2649a6a7a64e886c3cbf7290d641d69de991c2842e5bb577cd70f6e0",
@@ -468,10 +575,10 @@
           "source_url": "https://x.com/thsottiaux/status/2078320950488297917",
           "captured_at": "2026-09-05T11:43:50.540853+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2077607697487188198": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2077607697487188198",
       "full_text": "Another reset for our Codex and ChatGPT Work users. Actually hit 9M active users way earlier today, but then got distracted by the approximately millions of things the team is doing to keep the systems up and reliable.\n\nShould have that sweet 100% weekly usage limit back in a few minutes. Go be your productive self and close twitter. Shoo!",
       "full_text_sha256": "6061ae72fd3434bdab7fd65befd9f41bc66559ead31a76eeb013ec2226782d78",
@@ -494,10 +601,10 @@
           "source_url": "https://x.com/thsottiaux/status/2077607697487188198",
           "captured_at": "2026-09-05T11:43:56.943416+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2077114635308986427": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2077114635308986427",
       "full_text": "Hello. We have reached 8M active users across Codex and ChatGPT Work.\n\nWe are once again resetting the usage limits for all. And we continue to not have the 5h rate limit as well, allowing everyone to explore the boundaries of GPT-5.6 Sol and discover how ambitious you can be.\n\nSee you tomorrow for more updates on our growth!",
       "full_text_sha256": "68938093b0d123d2cbe03da5ef131d74540fabbae336c9ddf2f1737b55cc35d1",
@@ -520,10 +627,10 @@
           "source_url": "https://x.com/thsottiaux/status/2077114635308986427",
           "captured_at": "2026-09-05T11:44:03.599125+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2076735790567338203": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2076735790567338203",
       "full_text": "Thank you to the 7M active users who are now using Codex and ChatGPT Work.\n\nWe have added a banked reset to everyone's account to celebrate the milestone. You can apply the reset in the desktop app or on web and it will replenish the weekly usage for you.\n\nHave fun out there.",
       "full_text_sha256": "f638ffa6e99f648e95a6b2cc1e3f345a846aa19f7eba1738f175625a8c83ed9c",
@@ -546,10 +653,10 @@
           "source_url": "https://x.com/thsottiaux/status/2076735790567338203",
           "captured_at": "2026-09-05T11:44:10.254241+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2076418567143408112": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2076418567143408112",
       "full_text": "Added a banked reset to 500k users of ChatGPT Work and Codex.\n\nWhat’s been happening:\n- Just released the ability to use a banked reset from web and mobile. Before today you could only do it in the desktop app\n- Had an issue where less than 10% of users who used a banked reset and it didn’t actually reset. This was during a 2 hour window.\n- It was hard to find all the exact users where it didn’t apply, so instead granted a banked reset to everyone who pressed the reset button in that 2 hour window. This also gives us the opportunity to validate the new infra ahead of tomorrow\n\nTomorrow we will celebrate our 7M active users milestone and grant the first banked reset across all of our ChatGPT Work and Codex users.\n\nWe will also release a bunch of updates to the desktop app, addressing a ton of your feedback.\n\nTalk soon",
       "full_text_sha256": "dd36e2c8318f5ac829ef7662812e7a4f7ba98e045ea9cc00415725e58e078e70",
@@ -572,10 +679,10 @@
           "source_url": "https://x.com/thsottiaux/status/2076418567143408112",
           "captured_at": "2026-09-05T11:44:19.029246+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2075820987833274448": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2075820987833274448",
       "full_text": "Introducing... another usage limit reset for all our ChatGPT Work and Codex users. Should land over next 30 minutes. Hope you have an awesome weekend.\n\nThank you for pushing our systems to the absolute limit, we have never seen traffic increase so quickly. Keep the feedback coming and we'll keep shipping.",
       "full_text_sha256": "c90822d991e96981c4b29e222a3cdbfdf81f35c148378cb8240abcafa111468f",
@@ -598,10 +705,10 @@
           "source_url": "https://x.com/thsottiaux/status/2075820987833274448",
           "captured_at": "2026-09-05T11:44:25.324742+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2075641131002700120": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2075641131002700120",
       "full_text": "Hello beautiful people! We have reset usage limits across Codex and ChatGPT Work. And another one will come later in the day. Rejoice.\n\nNow that I have your attention, a quick update on ChatGPT Work, Codex and all the updates we shared yesterday.\n\nWe’ve spent the last 24 hours reading feedback, looking at usage patterns, and talking with many of you. The short version is that there is a *lot* of excitement for GPT 5.6 Sol, ChatGPT Work on mobile & web, but also that we didn't get everything quite right.\n\n- We made it too easy to use the highest-compute settings without making the impact on usage limits sufficiently clear.\n- We reorganized the desktop app in one bold move, making familiar things like chats and projects harder to find.\n- Our launch framing was focused on ChatGPT Work and to some of our Codex fans it made it feel like Codex was going away over time. Absolutely not our intention, we love Codex and it is here to stay.\n- And we introduced regressions for some existing multi-agent workflows, alongside a collection of rough edges in plugins and other parts of the experience.\n\nWe’re landing a first set of improvements today. We’re resetting usage twice so people can keep experimenting, changing defaults and the model picker so they don’t push people toward unnecessarily expensive settings, fixing several plugin submission issues, improving how we represent Codex in the product, and cleaning up some of the most immediate desktop problems.\n\nA larger set of improvements will land next week. We’re bringing chats and projects back into the sidebar in a more familiar and customizable way, making usage and reset timing much more visible, clarifying when to use ChatGPT Work and when to use Codex, and addressing the many other smaller pieces of great feedback we've had.\n\nThe ambition behind this launch hasn’t changed. We think bringing ChatGPT and Codex together into a workspace where people and agents can collaborate is a very important step forward. But an ambitious direction doesn’t excuse avoidable confusion or regressions in the first version.\n\nPlease keep the feedback coming. We’re moving quickly, and you should see the experience already get better with a few updates today; and substantially better again next week.",
       "full_text_sha256": "b045380177626bfc7cfe947e21700003421aa37ee731afb575d83407112c2249",
@@ -625,10 +732,10 @@
           "source_url": "https://x.com/thsottiaux/status/2075641131002700120",
           "captured_at": "2026-09-05T11:57:57.536651+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2075330198887940337": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2075330198887940337",
       "full_text": "Enjoy a full reset of your usage limits for ChatGPT Work and Codex. Propagating in the next hour.\n\n@_rajanagarwal just joined to work on model research and push on coding capabilities. You can thank him for pressing the button today.",
       "full_text_sha256": "81a9d3e5deafae31de98ff0938a891af03a83b9f21f28b9d84e677b007b344f4",
@@ -651,10 +758,10 @@
           "source_url": "https://x.com/thsottiaux/status/2075330198887940337",
           "captured_at": "2026-09-05T11:44:38.576050+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2071740419030053227": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2071740419030053227",
       "full_text": "Codex usage limits will be fully reset again in the next hour and we will credit one additional reset into your bank for your own usage over the next 24 hours.\n\nWe investigated reports that Codex usage was being consumed faster than expected. There wasn't one central issue, but a few smaller problems compounded for some users.   \n\nHere's what we found and changed: \n- Actual usage: Auto-review had become more proactive, another change was triggering more subagent work, and background suggestions could run twice or retry too frequently after failures. We reverted the changes and fixed suggestion scheduling, duplicate generation, and retry behavior. This should reduce unnecessary background token consumption while preserving the work users explicitly request. \n- Usage reporting: Auto-review was incorrectly appearing as GPT‑5.4 usage, and failed or rate-limited requests were still shown as turns. Auto-review now appears as its own category, and only successful requests count toward the turn graphs. Rate-limited requests were never charged, but they were being displayed incorrectly. \n- Immediate relief: We reset usage limits while rolling out the fixes, then shipped hotfixes across the CLI, desktop app, and usage backend. \n- What to expect: New usage data should be clearer and actual consumption should be lower. Historical charts may still show auto-review under GPT‑5.4 because older turn data was not relabeled. Features that intentionally perform more work; such as /goal, subagents, and higher reasoning levels will still naturally use more capacity.  \n\nAll fixes are now deployed, and we've added more detailed monitoring so we can detect background-usage regressions sooner. We'll continue watching the results closely.\n\nThank you for building and doing all sorts of things with Codex.",
       "full_text_sha256": "43371603548abaaf54bac5061f38f6adab1ec4dddf956872732f07df0a3b2fcf",
@@ -678,10 +785,10 @@
           "source_url": "https://x.com/thsottiaux/status/2071740419030053227",
           "captured_at": "2026-09-05T11:58:11.047153+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2071381664853319742": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2071381664853319742",
       "full_text": "As we are still investigating, I have reset everyone's Codex usage limits. This is a hard reset given some users had stacked up to three banked resets already that they can apply on their own schedule.\n\nFunnily enough, this week at OpenAI is called the RESET week, which is meant for folks to relax a bit. However it will be a different kind of RESET week. Enjoy.",
       "full_text_sha256": "5a6e2ad9f07053b281d4bf4d57ba3d81a42796e2c3e0331fc16814a7e6bbd83f",
@@ -704,10 +811,10 @@
           "source_url": "https://x.com/thsottiaux/status/2071381664853319742",
           "captured_at": "2026-09-05T11:44:50.520607+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2070653282440405046": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2070653282440405046",
       "full_text": "We are giving all Codex users a usage reset on the house. Should be showing in your accounts in the next few hours.\n\nWe have applied some mitigations, but our investigation hasn't shown users being impacted at large. We are continuing to monitor the situation.",
       "full_text_sha256": "82c52e5ca19285651778ca2c5a5939e5198cf264e61b5c8bcb7083e1d73d1163",
@@ -730,10 +837,10 @@
           "source_url": "https://x.com/thsottiaux/status/2070653282440405046",
           "captured_at": "2026-09-05T11:44:57.051078+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2067399435009622521": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2067399435009622521",
       "full_text": "Dearest gentle codexer.\n\nWe did a sneaky double reset. Not only do you get a full reset on us. But you are also getting one into the reset bank to use at your own leisure. \n\nEnjoy",
       "full_text_sha256": "0f8e74eff091fa21f337cf008a4953fff277e38d701313c93cddfb1eb2a58043",
@@ -756,10 +863,10 @@
           "source_url": "https://x.com/thsottiaux/status/2067399435009622521",
           "captured_at": "2026-09-05T11:45:03.081145+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2062329981548802523": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2062329981548802523",
       "full_text": "Hi. Over the last 24 hours we had three separate small incidents that affected Codex reliability. Those are three too many and we are taking active steps for them to not reproduce.\n\nI have reset usage limits for Codex across all paid plans. May the tokens flow again.",
       "full_text_sha256": "e7dcca275b8da9138c9f0653433caa36438fb2d95631376addced63c836c59f7",
@@ -782,10 +889,10 @@
           "source_url": "https://x.com/thsottiaux/status/2062329981548802523",
           "captured_at": "2026-09-05T11:45:08.694693+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2061106703446450392": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2061106703446450392",
       "full_text": "The Codex usage limits have been reset for all paid ChatGPT subscriptions. You should be back to 100% weekly and 100% hourly limits.\n\nLet the tokens do incredible things today and have fun.",
       "full_text_sha256": "6f93508b48185a8fcb87e7ec9008a415e2c996fc022e7ffac2886a0fb811d236",
@@ -808,10 +915,10 @@
           "source_url": "https://x.com/thsottiaux/status/2061106703446450392",
           "captured_at": "2026-09-05T11:45:15.359531+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2058280452851638313": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2058280452851638313",
       "full_text": "Some of you noticed limits drained faster in Codex, we root caused it to an optimization that we rolled back that had an impact on cache hit rates when compacting across long running sessions. \n\nWe fixed this and have now reset usage limits for all accounts. Enjoy the weekend.",
       "full_text_sha256": "76ff5570cf8819f67583395f54dd959d7315e06bb119a4e97f2ebbe6778e34cd",
@@ -834,10 +941,10 @@
           "source_url": "https://x.com/thsottiaux/status/2058280452851638313",
           "captured_at": "2026-09-05T11:45:21.422230+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2055707616605835333": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2055707616605835333",
       "full_text": "Codex usage limits have now been reset across all paid plans. Enjoy the weekend!",
       "full_text_sha256": "d67d95d59cc2ceb6f4e730023dc6b851ab397c76e01f0b7c0235effaeb6d1f22",
@@ -860,10 +967,10 @@
           "source_url": "https://x.com/thsottiaux/status/2055707616605835333",
           "captured_at": "2026-09-05T11:53:57.397916+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2048997818673537399": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2048997818673537399",
       "full_text": "Don't just reset Codex rate limits for fun, it costs money.\nDon't just reset Codex rate limits for fun, it costs money.\n\n... but the vibes are good ...\n\nI have reset Codex rate limits for ALL paid plans to celebrate a good week and allow everyone to build more with GPT-5.5. Enjoy",
       "full_text_sha256": "bb4ead38db8e45fc013c6f8a161f60e0f8ae9b479b092f3147ff7466eeea713c",
@@ -886,10 +993,10 @@
           "source_url": "https://x.com/thsottiaux/status/2048997818673537399",
           "captured_at": "2026-09-05T11:45:33.555373+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2046367145588916687": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2046367145588916687",
       "full_text": "Codex incident is mitigated, seeing recovery. Lasted about 10 mins, Codex itself helped with the remediation, but ultimately the insight came from a human this time. \n\nApologies for the disruption and rate limit reset incoming.",
       "full_text_sha256": "6d29ce39ef0a5353f65953800969336b02b1b59dfacc1e4b12f054fa27855db5",
@@ -912,10 +1019,10 @@
           "source_url": "https://x.com/thsottiaux/status/2046367145588916687",
           "captured_at": "2026-09-05T11:45:39.676655+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2044943514832871564": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2044943514832871564",
       "full_text": "Hi! To celebrate its 1-year anniversary, I have allowed Codex to reset its own rate limits across all plans. Enjoy all the new features.",
       "full_text_sha256": "96e1ff9fee45d8e4f8033acfda343e00841a0308ab91265373014ade85748d00",
@@ -938,10 +1045,10 @@
           "source_url": "https://x.com/thsottiaux/status/2044943514832871564",
           "captured_at": "2026-09-05T11:45:46.166861+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2042299371602264319": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2042299371602264319",
       "full_text": "We did it, say hi to the $100 plan! \n\nIt should be the sweet spot for a ton of you. It comes with a ton of codex usage. And yes we are resetting the limits again too as I mentioned yesterday. Let’s keep building!",
       "full_text_sha256": "a2e4a67f785825e59a529a4528c6e0b9b9da175c8d50583160ce1c7cc8f25714",
@@ -964,10 +1071,10 @@
           "source_url": "https://x.com/thsottiaux/status/2042299371602264319",
           "captured_at": "2026-09-05T11:46:37.230679+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2041655710346572085": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2041655710346572085",
       "full_text": "Three million people are now using Codex weekly - up from two million a little under a month ago. Incredible to see the growth. Thank you to all of you and to the ecosystem we’re part of. To celebrate, we’re resetting rate limits so you can keep building, and we’ll reset them every additional 1M users until we reach 10M, so we can keep celebrating along the way.\n\nEnjoy and thank you!",
       "full_text_sha256": "5e3e25745803bc382d7578ffe309db9382b95ecd61222d6ad30d3ec764acf394",
@@ -990,10 +1097,10 @@
           "source_url": "https://x.com/thsottiaux/status/2041655710346572085",
           "captured_at": "2026-09-05T11:46:43.551916+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2039248564967424483": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2039248564967424483",
       "full_text": "Our Codex dashboards are showing increased rate of users hitting rate limits and since we don't fully understand why I have made the cautious decision of resetting the usage limits for all plans. Enjoy.\n\nI also wanted to celebrate us finding a pocket of fraudulent accounts that we banned and have helped us regain some compute. The fight against abuse never stops, but it's important to mark the moment and make it a little shared victory.",
       "full_text_sha256": "1b070476ca289e8df6d915f7e066d473baae58d887f0a3aaa8f54f375eb42b0a",
@@ -1016,10 +1123,10 @@
           "source_url": "https://x.com/thsottiaux/status/2039248564967424483",
           "captured_at": "2026-09-05T11:46:49.980825+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2037346989244096581": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2037346989244096581",
       "full_text": "Hello. We have reset Codex usage limits across all plans to let everyone experiment with the magnificent plugins we just launched, and because it had been a while! \n\nYou can just build unlimited things with Codex. Have fun!",
       "full_text_sha256": "9eaf0d11e048c5e0ede86149f055209db022f04d13014f724fcf9118c354ffe8",
@@ -1042,10 +1149,10 @@
           "source_url": "https://x.com/thsottiaux/status/2037346989244096581",
           "captured_at": "2026-09-05T11:46:56.199298+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2031605592352313567": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2031605592352313567",
       "full_text": "OK, Codex is back and stable and we should be good for a while. \n\nReset button pressed, should see it in a bit",
       "full_text_sha256": "bc6b062b32b085307ce98c351f49693feb91a39d68cf2a194f29613f1b5e13d8",
@@ -1068,10 +1175,10 @@
           "source_url": "https://x.com/thsottiaux/status/2031605592352313567",
           "captured_at": "2026-09-05T11:47:02.720693+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2031216405266481489": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2031216405266481489",
       "full_text": "This codex issue is now fully resolved and stable for the last couple of hours. \n\nYou have come to expect it, but yes, that means we will be reseting rate limits in a bit. Enjoy.",
       "full_text_sha256": "971da112efe9d948a462fdf005e3b2a364bc53c9af0f5ca3b6b77fa6a1a72ed4",
@@ -1094,10 +1201,10 @@
           "source_url": "https://x.com/thsottiaux/status/2031216405266481489",
           "captured_at": "2026-09-05T11:47:08.902600+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2030474136024400173": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2030474136024400173",
       "full_text": "We don’t have evidence of a widespread issue with codex usage being drained faster than it should but there are enough reports and we have reset rate limits for plus & pro subscriptions while we work towards wrapping up our investigation over the coming 1-3 days.",
       "full_text_sha256": "e0de7d254f90d53f34ec329fccd2d7ae456ed4d09ce76e79757b5f15e6c2d8e2",
@@ -1120,10 +1227,10 @@
           "source_url": "https://x.com/thsottiaux/status/2030474136024400173",
           "captured_at": "2026-09-05T11:54:08.808153+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2029308599835738218": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2029308599835738218",
       "full_text": "We caught an issue that was causing the 2X promotional increase in limits to not be applied to an estimated 9% of plus and pro users for Codex. \n\nWe have now fixed this issue and are reseting the rate limit for all plus and pro users to compensate. Apologies and thank you for the bug reports over the last couple of days.",
       "full_text_sha256": "b0671103a1cfbbf44d0f7e82486eb86b6df9a75011849c42298ded9b5612644a",
@@ -1146,10 +1253,10 @@
           "source_url": "https://x.com/thsottiaux/status/2029308599835738218",
           "captured_at": "2026-09-05T11:47:20.013040+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2028649088594436225": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2028649088594436225",
       "full_text": "Codex is back up. We introduced an issue that caused requests to be blocked and rejected as high cyber risk. This was fixed in ~8 mins and we are now back online and fully operational.\n\nTeam will reset rate limits, that’s been a while. Enjoy one on us.",
       "full_text_sha256": "efeac9093f4eaf2fad31bcadd24736c8261826174c5d19c56702c3ed5482ae4b",
@@ -1172,10 +1279,10 @@
           "source_url": "https://x.com/thsottiaux/status/2028649088594436225",
           "captured_at": "2026-09-05T11:47:26.005854+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2004100061933064395": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2004100061933064395",
       "full_text": "For Codex users, to thank you all for the fun we've had over the last months, our first gift is that we have **reset rate limits and are lifting the usage limits to 2X the usual limits until the 1st of Jan**. Wish you all a merry holiday and lots of coding!!\n\nSpread the word 👀",
       "full_text_sha256": "61030d29872e550b38b78c26ebe246cc8e6772153ba61a4e5b8ad785c729b7f1",
@@ -1199,10 +1306,10 @@
           "source_url": "https://x.com/thsottiaux/status/2004100061933064395",
           "captured_at": "2026-09-05T11:58:27.916439+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2002137269134819610": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2002137269134819610",
       "full_text": "We rewrote the underlying system to track and bill usage in Codex and we have reset usage limits in the process. Backfilling is time consuming and it’s more fun to give free usage. Enjoy!",
       "full_text_sha256": "6dce57960c933f2568ca1bd092a94ba04c754ebb13fd79e76a394f7477d0c73b",
@@ -1225,10 +1332,10 @@
           "source_url": "https://x.com/thsottiaux/status/2002137269134819610",
           "captured_at": "2026-09-05T11:47:37.462667+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "2001114683047317723": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/2001114683047317723",
       "full_text": "Didn’t need to do this in a while, but you know the drill. We have reset everyone’s usage limits, enjoy more Codex and apologies for the disruption.",
       "full_text_sha256": "419f4f0590153b4a61a78b3c7dbd73a82cdad5b3efa02b3f34dc3f6f347028c1",
@@ -1251,10 +1358,10 @@
           "source_url": "https://x.com/thsottiaux/status/2001114683047317723",
           "captured_at": "2026-09-05T11:47:43.429319+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "1995988609896513743": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/1995988609896513743",
       "full_text": "We have reset the usage limits for everyone in Codex, which helps us mitigate the issue the fastest and the team will continue to work on the underlying cause. This should propagate to all users over the next 10 mins, enjoy and apologies for the confusion!",
       "full_text_sha256": "0b599da3d2645b449b1c43cb8da75042b1a0c68bf5ef2ded2e2076e4efcb21c0",
@@ -1277,10 +1384,10 @@
           "source_url": "https://x.com/thsottiaux/status/1995988609896513743",
           "captured_at": "2026-09-05T11:47:49.333982+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "1992370994028388670": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/1992370994028388670",
       "full_text": "We have reset rate limits for all Codex users to compensate for the unusual high latencies in or near the US in the previous hours. Grateful for the team working hard behind the scenes to keep Codex running 24/7.\n\nI do recommend trying out GPT-5.1-Codex-Max too if you haven’t!",
       "full_text_sha256": "0a0a0d9504abc35b78f7f029939d97050e492aa2a4533edf50e4ee05d617e0b6",
@@ -1303,10 +1410,10 @@
           "source_url": "https://x.com/thsottiaux/status/1992370994028388670",
           "captured_at": "2026-09-05T11:47:55.661519+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "1986166501435711936": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/1986166501435711936",
       "full_text": "Codex outage resolved.\n\nWe suffered a minor outage for last 45 minutes which turned into a global outage for last 30 minutes, this is now resolved and we have reset the rate limits. Please let me know if you still see issues.",
       "full_text_sha256": "cc7b403381b33b0e9d304e9b774231b649a6b23b99cae0ab8d5007e20824d0c5",
@@ -1329,10 +1436,10 @@
           "source_url": "https://x.com/thsottiaux/status/1986166501435711936",
           "captured_at": "2026-09-05T11:48:01.371354+00:00"
         }
-      }
+      },
+      "status": "ready"
     },
     "1968163721034994139": {
-      "status": "ready",
       "source_url": "https://x.com/thsottiaux/status/1968163721034994139",
       "full_text": "We have reset everyone's limits for gpt-5-codex to allow you all to benefit more from it today and as a way to make up for the slowdowns earlier while we were provisioning additional GPUs. We'll continue to add capacity throughout the week to maintain the speed.\n\nEnjoy!",
       "full_text_sha256": "b9914a4846004f32d8c8fe171572e13e12ca48231e070ba999cad8bbfc5421e7",
@@ -1355,7 +1462,62 @@
           "source_url": "https://x.com/thsottiaux/status/1968163721034994139",
           "captured_at": "2026-09-05T11:48:07.183573+00:00"
         }
-      }
+      },
+      "status": "ready"
+    },
+    "2098685367058612394": {
+      "source_url": "https://x.com/thsottiaux/status/2098685367058612394",
+      "full_text": "Reset all propagated. Sweet dreams.",
+      "full_text_sha256": "95cd808e297fb42a1b3fd251123155d17ab2d46b59bf7b840257441d5fc1dc89",
+      "text_captured_at": "2026-09-12T18:23:16.947459+00:00",
+      "screenshot": {
+        "file": "2098685367058612394-27b51e7edcff3c83.jpg",
+        "sha256": "27b51e7edcff3c838a2541b0b701a1e48e0283c4ec2946665cc345c3d7bf4088",
+        "width": 786,
+        "height": 646,
+        "captured_at": "2026-09-12T18:23:17.989151+00:00",
+        "source_url": "https://x.com/thsottiaux/status/2098685367058612394",
+        "method": "public_html_capture",
+        "capture_version": 2,
+        "document_sha256": "5d19e97e2178970595a6a15a898cae6a7b8ccbb366d2d0c49d07d95f61953194",
+        "thumbnail": {
+          "file": "2098685367058612394-841761716a763807.jpg",
+          "sha256": "841761716a763807af458f05806f3c42670622dcc6e81a4ee30b4af5f40ac86e",
+          "width": 440,
+          "height": 362,
+          "source_sha256": "27b51e7edcff3c838a2541b0b701a1e48e0283c4ec2946665cc345c3d7bf4088",
+          "source_url": "https://x.com/thsottiaux/status/2098685367058612394",
+          "captured_at": "2026-09-12T18:23:17.989151+00:00"
+        }
+      },
+      "status": "ready"
+    },
+    "2096692394435752258": {
+      "source_url": "https://x.com/thsottiaux/status/2096692394435752258",
+      "full_text": "@Gelassoldat @rezoundous Who says it won't reset in a while 👀",
+      "full_text_sha256": "f88d56341d467d1c9eda3115b388cb6d57d4b7e79c3b13bb713390724dcbaf60",
+      "text_captured_at": "2026-09-12T18:23:41.070404+00:00",
+      "screenshot": {
+        "file": "2096692394435752258-668b363d04fafdea.jpg",
+        "sha256": "668b363d04fafdeac20048cffde6af43eefd6e1340548914aa462cfae5b1ddea",
+        "width": 786,
+        "height": 314,
+        "captured_at": "2026-09-12T18:23:41.956633+00:00",
+        "source_url": "https://x.com/thsottiaux/status/2096692394435752258",
+        "method": "public_html_capture",
+        "capture_version": 2,
+        "document_sha256": "4338435b9035918602a0a69cb44405454e7f4739f2cdd891679df18d7b4d2b3e",
+        "thumbnail": {
+          "file": "2096692394435752258-308889a78cc6093f.jpg",
+          "sha256": "308889a78cc6093f280155a6cade03dbe28794960c86524e0c0105854028320e",
+          "width": 440,
+          "height": 176,
+          "source_sha256": "668b363d04fafdeac20048cffde6af43eefd6e1340548914aa462cfae5b1ddea",
+          "source_url": "https://x.com/thsottiaux/status/2096692394435752258",
+          "captured_at": "2026-09-12T18:23:41.956633+00:00"
+        }
+      },
+      "status": "ready"
     }
   }
 }

@@ -8,7 +8,12 @@ import urllib.error
 SOURCE = 'https://x.com/thsottiaux'
 CODES = {'ok', 'disabled', 'checking', 'x_dns', 'x_timeout', 'x_network', 'x_tls',
          'x_access_denied', 'x_rate_limited', 'x_unavailable', 'x_http', 'x_parse',
-         'collector_error', 'worker_stale'}
+         'collector_error', 'worker_stale', 'model_auth_required', 'model_rate_limited',
+         'model_timeout', 'model_unavailable', 'model_request_failed', 'model_runtime_error',
+         'model_result_missing', 'model_used_tools', 'model_output_too_large', 'invalid_result_json',
+         'invalid_result_schema', 'analysis_failed', 'worker_already_running',
+         'evidence_not_in_source', 'result_source_mismatch', 'source_changed_during_analysis',
+         'incomplete_translation', 'invalid_summary', 'model_network', 'capture_failed'}
 
 
 def diagnose(error):
@@ -49,7 +54,7 @@ class XCollectionError(RuntimeError):
 
 
 class CollectionStatus:
-    def __init__(self, enabled, interval=120, clock=None):
+    def __init__(self, enabled, interval=120, clock=None, ai=False):
         self.enabled = enabled
         self.interval = max(120, interval)
         self.clock = clock or (lambda: dt.datetime.now(dt.timezone.utc))
@@ -60,7 +65,7 @@ class CollectionStatus:
         self.stages = {key: {'state': 'checking' if enabled else 'disabled',
                              'code': 'checking' if enabled else 'disabled',
                              'checked_at': None, 'last_success_at': None}
-                       for key in ('feed', 'watch')}
+                       for key in (('feed', 'watch', 'analysis') if ai else ('feed', 'watch'))}
 
     def record(self, stage, outcome='ok', error=None, diagnostic=None):
         with self.lock:
@@ -80,7 +85,9 @@ class CollectionStatus:
         with self.lock:
             now = self.clock()
             stages = {key: dict(value) for key, value in self.stages.items()}
-            stale = self.enabled and (now - self.updated).total_seconds() > max(480, self.interval + 180)
+            last_feed_check = stages['feed'].get('checked_at')
+            freshness = dt.datetime.fromisoformat(last_feed_check) if last_feed_check else self.started
+            stale = self.enabled and (now - freshness).total_seconds() > max(480, self.interval + 180)
             if not self.enabled: overall = 'disabled'
             elif stale: overall = 'stale'
             elif stages['feed']['state'] == 'error': overall = 'error'
