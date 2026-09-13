@@ -3,7 +3,9 @@
 import { Fragment, useEffect, useMemo, useRef, type CSSProperties } from 'react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { localizedExcerpt, resetLabel, text as i18nText, type Locale } from '@/lib/i18n';
-import { announcementCopy } from '@/lib/announcements';
+import { announcementCopy, statusView } from '@/lib/announcements';
+import type { ResetRecord } from '@/lib/post-content';
+import { calendarDateKey as dateKey, calendarWindow } from '@/lib/calendar-history';
 
 type CalendarRecord = {
   id: string;
@@ -12,11 +14,11 @@ type CalendarRecord = {
   excerpt: string;
   source_url: string;
   source_type: string;
+  status?: 'planned' | 'announced' | 'uncertain';
+  historical_verification?: ResetRecord['historical_verification'];
 };
 const DAY = 86400000;
 const BEIJING = 8 * 3600000;
-const WEEK_COUNT = 26;
-const dateKey = (time: number) => new Date(time + BEIJING).toISOString().slice(0, 10);
 
 export function ResetCalendar({ records, now, ready, locale, onSelect }: { records: CalendarRecord[]; now: number; ready: boolean; locale: Locale; onSelect?: (id: string) => void }) {
   const scroll = useRef<HTMLDivElement>(null);
@@ -25,17 +27,13 @@ export function ResetCalendar({ records, now, ready, locale, onSelect }: { recor
   const weekdays = locale === 'zh' ? ['', '一', '', '三', '', '五', ''] : ['', 'Mon', '', 'Wed', '', 'Fri', ''];
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const weeks = useMemo(() => {
-    // Keep the site's Beijing date convention. Pad the rolling 26-week window
-    // back to Sunday so the weekday rows match the reference contribution grid.
-    const end = Date.parse(today + 'T00:00:00+08:00');
-    const start = end - (WEEK_COUNT * 7 - 1) * DAY;
-    const first = start - new Date(start + BEIJING).getUTCDay() * DAY;
+    const { first, end, columns } = calendarWindow(Date.parse(today + 'T00:00:00+08:00'));
     const byDay = new Map<string, CalendarRecord[]>();
     for (const record of records) {
       const key = dateKey(Date.parse(record.announced_at));
       byDay.set(key, [...(byDay.get(key) ?? []), record]);
     }
-    return Array.from({ length: Math.ceil((end - first + DAY) / (7 * DAY)) }, (_, week) =>
+    return Array.from({ length: columns }, (_, week) =>
       Array.from({ length: 7 }, (_, row) => {
         const time = first + (week * 7 + row) * DAY;
         const key = dateKey(time);
@@ -76,14 +74,16 @@ export function ResetCalendar({ records, now, ready, locale, onSelect }: { recor
                       if (day.future) return <span key={day.key} className="calendar-day calendar-future" style={position} aria-hidden="true" />;
                       const event = day.events[0];
                       const kind = day.events.some(record => record.reset_type === 'banked') ? 'banked' : event ? 'regular' : '';
-                      const description = !ready ? t('loadingRecords') : day.events.length ? day.events.length + ' ' + announcementCopy[locale].eventCount : t('noResetDay');
+                      const pendingOnly = day.events.length > 0 && !day.events.some(record => record.status === 'announced');
+                      const description = !ready ? t('loadingRecords') : day.events.length ? day.events.length + ' ' + announcementCopy[locale].calendarCount : t('noResetDay');
+                      const statuses = Array.from(new Set(day.events.map(record => statusView(record, locale).label))).join(' / ');
                       return (
                         <Tooltip key={day.key}>
                           <TooltipTrigger
-                            className={'calendar-day ' + kind}
+                            className={'calendar-day ' + kind + (pendingOnly ? ' pending-only' : '')}
                             style={position}
                             disabled={!ready}
-                            aria-label={[day.key, description, t('beijing')].join(', ') + (event ? t('clickOriginal') : '')}
+                            aria-label={[day.key, description, t('beijing'), statuses].filter(Boolean).join(', ') + (event ? t('clickOriginal') : '')}
                             closeOnClick={!!event}
                             render={event ? <button type="button" onClick={() => onSelect?.(event.id)} /> : <button type="button" disabled={!ready} />}
                           />
@@ -92,7 +92,7 @@ export function ResetCalendar({ records, now, ready, locale, onSelect }: { recor
                               <strong>{day.key}</strong><span className="calendar-tooltip-zone"> · {t('beijing')}</span>
                               {day.events.length ? day.events.map(record => (
                                 <div className="calendar-tooltip-event" key={record.id}>
-                                  <span>{resetLabel(locale, record.reset_type)}{record.source_type === 'observed' ? t('observedNote') : ''}</span>
+                                  <span>{resetLabel(locale, record.reset_type)} · {statusView(record, locale).label}{record.source_type === 'observed' ? t('observedNote') : ''}</span>
                                   {(() => { const excerpt = localizedExcerpt(locale, record.id, record.excerpt); return <p lang={excerpt.translated ? 'zh-CN' : 'en'}>{excerpt.value}</p>; })()}
                                 </div>
                               )) : <p>{t('noResetSentence')}</p>}
