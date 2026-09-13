@@ -50,7 +50,8 @@ def main():
     parser.add_argument('--no-build', action='store_true', help='Use an existing dist/client build')
     parser.add_argument('--live', action='store_true', help='Poll public X sources; disabled by default')
     parser.add_argument('--capture', action='store_true', help='Capture new X post images (requires optional dependencies)')
-    parser.add_argument('--translate', action='store_true', help='Use .data/translation.json; may incur provider charges')
+    parser.add_argument('--translate', action='store_true', help='Legacy translation provider; requires --live')
+    parser.add_argument('--ai', action='store_true', help='Capture public X posts and analyze with your authenticated Codex CLI (enables --live and --capture)')
     parser.add_argument('--host', default=os.getenv('HOST', '127.0.0.1'))
     parser.add_argument('--port', type=int, default=int(os.getenv('PORT', '8080')))
     parser.add_argument('--state', type=Path, default=Path(os.getenv('DATA_DIR', '.data')))
@@ -62,6 +63,11 @@ def main():
     args.live = args.live or os.getenv('LIVE_COLLECTION') == '1'
     args.capture = args.capture or os.getenv('CAPTURE_POSTS') == '1'
     args.translate = args.translate or os.getenv('TRANSLATE_POSTS') == '1'
+    args.ai = args.ai or os.getenv('AI_ANALYSIS') == '1'
+    if args.ai:
+        if args.translate:
+            raise RuntimeError('--ai already translates with Codex; disable --translate / TRANSLATE_POSTS.')
+        args.live = args.capture = True
     if (args.capture or args.translate) and not args.live:
         raise RuntimeError('--capture and --translate require --live.')
     if args.capture:
@@ -69,6 +75,15 @@ def main():
         if not all(importlib.util.find_spec(name) for name in ('PIL', 'playwright')):
             raise RuntimeError('Run: python -m pip install -r requirements-capture.txt; python -m playwright install chromium')
     sys.path.insert(0, str(ROOT / 'ops'))
+    if args.ai:
+        from ai_analysis import executable_command, AnalysisError
+        from ai_config import bounded_int
+        try:
+            executable_command(os.getenv('CODEX_EXECUTABLE', 'codex'))
+        except AnalysisError as error:
+            raise RuntimeError('Codex CLI not found. Install the official CLI, log in as this system user, then retry --ai.') from error
+        for name, default, low, high in [('AI_MAX_JOBS', 3, 1, 20), ('AI_TIMEOUT_SECONDS', 150, 5, 300), ('AI_BUDGET_SECONDS', 240, 5, 1800)]:
+            bounded_int(name, default, low, high)
     from server import serve
     serve(ROOT, args)
 

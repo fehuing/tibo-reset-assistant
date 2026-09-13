@@ -10,6 +10,9 @@ services:
       HOST: 0.0.0.0
       PORT: 8080
       LIVE_COLLECTION: ${LIVE_COLLECTION:-0}
+      # The base container does not bundle Codex authentication or Chromium.
+      # Run optional --ai on the trusted host as documented in docs/CODEX-SETUP.md.
+      AI_ANALYSIS: "0"
       POLL_SECONDS: ${POLL_SECONDS:-120}
       ALLOW_REFERENCE_FALLBACK: ${ALLOW_REFERENCE_FALLBACK:-0}
       ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:8080,http://127.0.0.1:8080}

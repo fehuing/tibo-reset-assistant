@@ -11,3 +11,6 @@ __pycache__
 *.log
 *.sqlite*
 *.tsbuildinfo
+**/.codex
+**/auth.json
+codex-auth
